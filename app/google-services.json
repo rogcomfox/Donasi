@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "880081077264",
+    "project_id": "donasi-7ddd3",
+    "storage_bucket": "donasi-7ddd3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:880081077264:android:a24d07fa3cd6253fe0b695",
+        "android_client_info": {
+          "package_name": "com.nusantarian.donasi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "880081077264-hhic35lilgf0tpvnaq9bmakjn2uavj5p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWnq3SJ2xt0k_0XIq8nHcvVoNxbV7HgFc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "880081077264-hhic35lilgf0tpvnaq9bmakjn2uavj5p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
