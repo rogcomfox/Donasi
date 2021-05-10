@@ -1,60 +1,142 @@
 package com.nusantarian.donasi.ui.fragment.landing
 
 import android.os.Bundle
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.nusantarian.donasi.R
+import com.nusantarian.donasi.databinding.FragmentRegisterBinding
+import com.nusantarian.donasi.model.User
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class RegisterFragment : Fragment(), View.OnClickListener {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [RegisterFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class RegisterFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var _binding: FragmentRegisterBinding? = null
+    private val binding get() = _binding!!
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+    companion object {
+        const val DEFAULT_PROFILE_PICTURE =
+            "https://firebasestorage.googleapis.com/v0/b/donasi-7ddd3.appspot.com/o/profile_pic%2Fdefault%2Fdefault-profile-picture.jpg?alt=media&token=57a0e001-b52d-43b2-b86d-6821256294f2"
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_register, container, false)
+        _binding = FragmentRegisterBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment RegisterFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            RegisterFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.btnRegister.setOnClickListener(this)
+        binding.icBack.setOnClickListener(this)
+    }
+
+    override fun onClick(v: View) {
+        when (v.id) {
+            R.id.ic_back -> requireActivity().onBackPressed()
+            R.id.btn_register -> registerAccount()
+        }
+    }
+
+    private fun registerAccount() {
+        binding.progress.visibility = View.VISIBLE
+        val email = binding.tilEmail.editText?.text.toString()
+        val pass = binding.tilPass.editText?.text.toString()
+        val name = binding.tilName.editText?.text.toString()
+        val phone = binding.tilPhone.editText?.text.toString()
+        val confirm = binding.tilConfirm.editText?.text.toString()
+        val auth = FirebaseAuth.getInstance()
+
+        if (!isError(email, name, phone, pass, confirm))
+            binding.progress.visibility = View.GONE
+        else
+            auth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener {
+                if (it.isSuccessful) {
+                    val id = auth.currentUser?.uid
+                    addAccount(email, name, phone, id!!)
+                } else {
+                    Toast.makeText(context, "Failed to Create Account", Toast.LENGTH_SHORT).show()
+                    binding.progress.visibility = View.GONE
                 }
+            }.addOnFailureListener {
+                binding.progress.visibility = View.GONE
+                Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
             }
+    }
+
+    private fun addAccount(email: String, name: String, phone: String, id: String) {
+        val ref = FirebaseFirestore.getInstance().collection("users")
+        val user = User(email, name, phone, DEFAULT_PROFILE_PICTURE)
+        ref.document(id).set(user).addOnCompleteListener {
+            binding.progress.visibility = View.GONE
+            Toast.makeText(context, "Please Login First", Toast.LENGTH_SHORT).show()
+            findNavController()
+                .navigate(RegisterFragmentDirections.actionRegisterFragmentToLoginFragment())
+        }.addOnFailureListener {
+            binding.progress.visibility = View.GONE
+            Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun isError(
+        email: String,
+        name: String,
+        phone: String,
+        pass: String,
+        confirm: String
+    ): Boolean {
+        val empty = requireActivity().resources.getString(R.string.text_empty)
+        val invalid = requireActivity().resources.getString(R.string.text_invalid)
+        val notMatch = requireActivity().resources.getString(R.string.text_not_match)
+
+        return when {
+            email.isEmpty() -> {
+                binding.tilEmail.error = empty
+                false
+            }
+            !Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
+                binding.tilEmail.error = invalid
+                false
+            }
+            pass.isEmpty() -> {
+                binding.tilPass.error = empty
+                false
+            }
+            pass != confirm -> {
+                binding.tilPass.error = notMatch
+                binding.tilConfirm.error = notMatch
+                false
+            }
+            phone.isEmpty() -> {
+                binding.tilPhone.error = empty
+                false
+            }
+            name.isEmpty() -> {
+                binding.tilName.error = empty
+                false
+            }
+            else -> {
+                binding.tilEmail.error = null
+                binding.tilPhone.error = null
+                binding.tilName.error = null
+                binding.tilPass.error = null
+                binding.tilConfirm.error = null
+
+                binding.tilEmail.isErrorEnabled
+                binding.tilPhone.isErrorEnabled
+                binding.tilName.isErrorEnabled
+                binding.tilPass.isErrorEnabled
+                binding.tilConfirm.isErrorEnabled
+                true
+            }
+        }
     }
 }
