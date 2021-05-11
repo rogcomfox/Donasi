@@ -9,4 +9,18 @@
     <string name="tv_forgot_pass">Forgot Password?</string>
     <string name="tv_register_direction">Don\'t Have an Account?</string>
     <string name="tv_register">Register</string>
+    <string name="ic_back">Back</string>
+    <string name="tv_create_account">Create Your Account</string>
+    <string name="til_name">Full Name</string>
+    <string name="til_phone">Phone Number</string>
+    <string name="til_confirm">Confirm Password</string>
+    <string name="btn_register">Register</string>
+
+    <!--Text-->
+    <string name="text_empty">This is Empty Field</string>
+    <string name="text_invalid">Invalid Email Address</string>
+    <string name="text_not_match">Password Didn\'t Match</string>
+    <string name="tv_forgot">Forgot your Password?</string>
+    <string name="tv_forgot_info">Please enter your email address and we will send you a password reset link</string>
+    <string name="btn_send">Send</string>
 </resources>
