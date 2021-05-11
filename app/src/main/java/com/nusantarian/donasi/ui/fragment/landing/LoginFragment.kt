@@ -48,7 +48,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
         when (v.id) {
             R.id.tv_register_direction ->
                 findNavController()
-                    .navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment())
+                    .navigate(LoginFragmentDirections.actionLoginFragmentToRegisterFragment(null))
             R.id.tv_forgot_pass ->
                 findNavController()
                     .navigate(LoginFragmentDirections.actionLoginFragmentToForgotPassFragment())

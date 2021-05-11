@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavArgs
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.nusantarian.donasi.R
@@ -18,6 +20,7 @@ class RegisterFragment : Fragment(), View.OnClickListener {
 
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
+    //private val args:RegisterFragmentArgs by navArgs()
 
     companion object {
         const val DEFAULT_PROFILE_PICTURE =
@@ -37,6 +40,7 @@ class RegisterFragment : Fragment(), View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
         binding.btnRegister.setOnClickListener(this)
         binding.icBack.setOnClickListener(this)
+        //binding.etEmail.setText(args.email)
     }
 
     override fun onClick(v: View) {

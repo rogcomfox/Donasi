@@ -16,7 +16,12 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        //test
+        FirebaseAuth.getInstance().signOut()
+
         val user = FirebaseAuth.getInstance().currentUser
+
 
         Handler(Looper.getMainLooper()).postDelayed({
             if (user != null)
