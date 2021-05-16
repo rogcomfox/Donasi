@@ -7,7 +7,41 @@
 
     <fragment
         android:id="@+id/homeUserFragment"
-        android:name="com.nusantarian.donasi.ui.fragment.main.HomeUserFragment"
+        android:name="com.nusantarian.donasi.ui.fragment.user.HomeUserFragment"
         android:label="fragment_home_user"
-        tools:layout="@layout/fragment_home_user" />
+        tools:layout="@layout/fragment_home_user">
+        <action
+            android:id="@+id/action_homeUserFragment_to_detailDonationFragment"
+            app:destination="@id/detailDonationFragment" />
+        <action
+            android:id="@+id/action_homeUserFragment_to_historyUserFragment"
+            app:destination="@id/historyUserFragment" />
+        <action
+            android:id="@+id/action_homeUserFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailDonationFragment"
+        android:name="com.nusantarian.donasi.ui.fragment.user.DetailDonationFragment"
+        android:label="fragment_detail_donation"
+        tools:layout="@layout/fragment_detail_donation" />
+    <fragment
+        android:id="@+id/historyUserFragment"
+        android:name="com.nusantarian.donasi.ui.fragment.user.HistoryUserFragment"
+        android:label="fragment_history_user"
+        tools:layout="@layout/fragment_history_user" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.nusantarian.donasi.ui.fragment.user.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_profileFragment_to_changePassFragment"
+            app:destination="@id/changePassFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/changePassFragment"
+        android:name="com.nusantarian.donasi.ui.fragment.user.ChangePassFragment"
+        android:label="fragment_change_pass"
+        tools:layout="@layout/fragment_change_pass" />
 </navigation>
