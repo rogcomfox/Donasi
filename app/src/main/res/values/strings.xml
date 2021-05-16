@@ -15,6 +15,7 @@
     <string name="til_phone">Phone Number</string>
     <string name="til_confirm">Confirm Password</string>
     <string name="btn_register">Register</string>
+    <string name="tv_detail_title">More Information</string>
 
     <!--Text-->
     <string name="text_empty">This is Empty Field</string>
@@ -23,4 +24,10 @@
     <string name="tv_forgot">Forgot your Password?</string>
     <string name="tv_forgot_info">Please enter your email address and we will send you a password reset link</string>
     <string name="btn_send">Send</string>
+
+    <!--icon strings-->
+    <string name="nav_history">History</string>
+    <string name="nav_profile">Profile</string>
+    <string name="btn_update">Update Profile</string>
+    <string name="nav_pass">Change Password</string>
 </resources>
