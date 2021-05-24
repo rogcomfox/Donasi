@@ -21,7 +21,6 @@ class HomeUserFragment : Fragment() {
 
     private var _binding: FragmentHomeUserBinding? = null
     private val binding get() = _binding!!
-    lateinit var linearLayoutManager: LinearLayoutManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,25 +29,20 @@ class HomeUserFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentHomeUserBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
-        linearLayoutManager = LinearLayoutManager(activity)
-
-
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view.findViewById<RecyclerView>(R.id.rv_donations).layoutManager = linearLayoutManager
-
-
-
-        Log.d("HomeUser", "Display Donations")
         displayDonations(view)
     }
 
     private fun displayDonations(view: View) {
+        val linearLayoutManager: LinearLayoutManager = LinearLayoutManager(activity)
+        linearLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
+        view.findViewById<RecyclerView>(R.id.rv_donations).layoutManager = linearLayoutManager
+
         val db = FirebaseFirestore.getInstance()
         val adapter = GroupAdapter<GroupieViewHolder>()
         val donationList = mutableListOf<HomeDonation>()
@@ -58,15 +52,13 @@ class HomeUserFragment : Fragment() {
             .addOnSuccessListener { result ->
                 for (document in result) {
                     var donation: Donation = Donation.docToDonation(document)
-                    Log.d("HomeUser", document.id)
+
                     //untuk search nanti modif ini
                     donationList.add(HomeDonation(donation, document.id))
                 }
 
                 donationList.reversed().forEach() {
                     adapter.add(it)
-                    Log.d("HomeUser", it.donation.title)
-
                 }
             }
 
