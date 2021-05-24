@@ -18,6 +18,7 @@
     <string name="tv_detail_title">More Information</string>
     <string name="btn_donate">Donate</string>
     <string name="tv_readMore"><u>Read more</u></string>
+    <string name="til_new_pass">Password</string>
 
     <!--Text-->
     <string name="text_empty">This is Empty Field</string>
