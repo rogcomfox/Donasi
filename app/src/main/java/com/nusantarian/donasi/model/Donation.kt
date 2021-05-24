@@ -46,6 +46,10 @@ data class Donation(
 
         return ChronoUnit.DAYS.between(start, end).toInt()
     }
+
+    fun keywords() : String{
+        return title+desc+startDate+deadlineDate
+    }
 }
 
 class HomeDonation(val donation: Donation, val key: String) : Item<GroupieViewHolder>() {
