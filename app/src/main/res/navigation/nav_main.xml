@@ -24,7 +24,11 @@
         android:id="@+id/detailDonationFragment"
         android:name="com.nusantarian.donasi.ui.fragment.user.DetailDonationFragment"
         android:label="fragment_detail_donation"
-        tools:layout="@layout/fragment_detail_donation" />
+        tools:layout="@layout/fragment_detail_donation" >
+        <argument
+            android:name="donationUID"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/historyUserFragment"
         android:name="com.nusantarian.donasi.ui.fragment.user.HistoryUserFragment"

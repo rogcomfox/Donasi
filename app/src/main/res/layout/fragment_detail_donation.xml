@@ -88,7 +88,7 @@
                 </LinearLayout>
 
                 <ProgressBar
-                    android:id="@+id/progressBar"
+                    android:id="@+id/pb_cash"
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -99,7 +99,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp">
 
                     <TextView
                         android:id="@+id/tv_donorQty"

@@ -16,9 +16,11 @@ import com.nusantarian.donasi.R
 import com.nusantarian.donasi.databinding.FragmentHomeUserBinding
 import com.nusantarian.donasi.model.Donation
 import com.nusantarian.donasi.model.HomeDonation
+import com.nusantarian.donasi.ui.fragment.landing.LoginFragmentDirections
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieAdapter
 import com.xwray.groupie.GroupieViewHolder
+import com.xwray.groupie.Item
 import kotlin.math.log
 
 class HomeUserFragment : Fragment() {
@@ -69,7 +71,8 @@ class HomeUserFragment : Fragment() {
                 if (query != null) {
                     val queries = query.split(" ").toTypedArray()
                     displayDonations(view, queries)
-                    view.findViewById<TextView>(R.id.tv_category_1).text = "Results for " + '"' + queries[0] + "..." + '"'
+                    view.findViewById<TextView>(R.id.tv_category_1).text =
+                        "Results for " + '"' + queries[0] + "..." + '"'
                 }
                 return false
             }
@@ -82,7 +85,8 @@ class HomeUserFragment : Fragment() {
         searchView.setOnCloseListener(object : SearchView.OnCloseListener {
             override fun onClose(): Boolean {
                 displayDonations(view, arrayOf(""))
-                view.findViewById<TextView>(R.id.tv_category_1).text = resources.getString(R.string.tv_category_1)
+                view.findViewById<TextView>(R.id.tv_category_1).text =
+                    resources.getString(R.string.tv_category_1)
                 return false
             }
 
@@ -104,17 +108,19 @@ class HomeUserFragment : Fragment() {
                     var donation: Donation = Donation.docToDonation(document)
 
                     //Search System
-                    if (keyword[0].equals("")) {
-                        donationList.add(HomeDonation(donation, document.id))
-                    } else {
-                        var point = 0
-                        keyword.forEach {
-                            if (donation.keywords().contains(it)) {
-                                point++
-                            }
-                        }
-                        if (point == keyword.size) {
+                    if (donation.currentDuration() >= 0) {
+                        if (keyword[0].equals("")) {
                             donationList.add(HomeDonation(donation, document.id))
+                        } else {
+                            var point = 0
+                            keyword.forEach {
+                                if (donation.keywords().contains(it)) {
+                                    point++
+                                }
+                            }
+                            if (point == keyword.size) {
+                                donationList.add(HomeDonation(donation, document.id))
+                            }
                         }
                     }
                 }
@@ -122,6 +128,16 @@ class HomeUserFragment : Fragment() {
                 //Sorting Latest Donation
                 donationList.reversed().forEach() {
                     adapter.add(it)
+                }
+
+                adapter.setOnItemClickListener { item, view ->
+                    val donation = item as HomeDonation
+                    findNavController()
+                        .navigate(
+                            HomeUserFragmentDirections.actionHomeUserFragmentToDetailDonationFragment(
+                                donation.key
+                            )
+                        )
                 }
             }
 

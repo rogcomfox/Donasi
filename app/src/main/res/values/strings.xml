@@ -20,7 +20,7 @@
     <string name="tv_quote">Go ahead, even small things can make a big difference.</string>
     <string name="tv_search">Search</string>
     <string name="btn_donate">Donate</string>
-    <string name="tv_readMore">Read More</string>
+    <string name="tv_readMore"><u>Read More</u></string>
     <string name="tv_story">Story</string>
 
     <!--Text-->

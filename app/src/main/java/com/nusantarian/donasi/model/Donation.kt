@@ -1,6 +1,7 @@
 package com.nusantarian.donasi.model
 
 import android.widget.TextView
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.nusantarian.donasi.R
 import com.xwray.groupie.GroupieViewHolder
@@ -38,10 +39,31 @@ data class Donation(
 
             return donation
         }
+
+        fun docToDonation(document: DocumentSnapshot): Donation{
+            var donation: Donation = Donation(
+                document["title"].toString(),
+                document["desc"].toString(),
+                document["startDate"].toString(),
+                document["deadlineDate"].toString(),
+                document["cashCollected"].toString().toInt(),
+                document["cashTarget"].toString().toInt(),
+                document["donorQty"].toString().toInt()
+            )
+
+            return donation
+        }
     }
 
-    fun duration() : Int{
+    fun totalDuration() : Int{
         val start: LocalDate = LocalDate.parse(startDate)
+        val end: LocalDate = LocalDate.parse(deadlineDate)
+
+        return ChronoUnit.DAYS.between(start, end).toInt()
+    }
+
+    fun currentDuration() : Int{
+        val start: LocalDate = LocalDate.now()
         val end: LocalDate = LocalDate.parse(deadlineDate)
 
         return ChronoUnit.DAYS.between(start, end).toInt()
@@ -56,7 +78,7 @@ class HomeDonation(val donation: Donation, val key: String) : Item<GroupieViewHo
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
         viewHolder.itemView.findViewById<TextView>(R.id.tv_title).text = donation.title
         viewHolder.itemView.findViewById<TextView>(R.id.tv_desc).text = donation.desc
-        viewHolder.itemView.findViewById<TextView>(R.id.tv_duration).text = "Closes after " + donation.duration().toString() + " days"
+        viewHolder.itemView.findViewById<TextView>(R.id.tv_duration).text = donation.currentDuration().toString() + " days remaining"
     }
 
     fun getItem(): Donation {
