@@ -16,6 +16,8 @@
     <string name="til_confirm">Confirm Password</string>
     <string name="btn_register">Register</string>
     <string name="tv_detail_title">More Information</string>
+    <string name="btn_donate">Donate</string>
+    <string name="tv_readMore"><u>Read more</u></string>
 
     <!--Text-->
     <string name="text_empty">This is Empty Field</string>
@@ -30,4 +32,5 @@
     <string name="nav_profile">Profile</string>
     <string name="btn_update">Update Profile</string>
     <string name="nav_pass">Change Password</string>
+
 </resources>
