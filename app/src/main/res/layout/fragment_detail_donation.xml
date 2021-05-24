@@ -45,47 +45,46 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
+                android:background="@drawable/rounded_donation_home_background"
                 android:orientation="vertical"
+                android:padding="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:padding="16dp"
-                android:background="@drawable/rounded_donation_home_background">
+                app:layout_constraintTop_toTopOf="parent">
 
 
                 <TextView
-                    android:id="@+id/tv_detailTitle"
+                    android:id="@+id/tv_detail_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Bantu Anak Palestina Lewati Musim Dingin Mematikan"
-                    android:textSize="18sp"
+                    android:text="Loading..."
                     android:textColor="@color/text"
-                    android:textStyle="bold"
-                    />
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="8dp">
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/tv_cashCollected"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Rp 500,000"
-                        android:textSize="16sp"
-                        android:textColor="@color/black"/>
+                        android:text="Loading..."
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/tv_cashTarget"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:layout_marginLeft="4dp"
+                        android:layout_weight="1"
+                        android:text="collected from loading..."
                         android:textColor="@color/text"
-                        android:textSize="11sp"
-                        android:text="collected from 2,000,000" />
+                        android:textSize="11sp" />
                 </LinearLayout>
 
                 <ProgressBar
@@ -95,7 +94,7 @@
                     android:layout_height="wrap_content"
                     android:max="2000000"
                     android:progress="500000"
-                    android:progressTint="@color/colorProgress"/>
+                    android:progressTint="@color/colorProgress" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -107,18 +106,18 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="50 Donation"
+                        android:gravity="left"
+                        android:text="Loading.... Donations"
                         android:textColor="@color/black"
-                        android:textSize="12sp"
-                        android:gravity="left"/>
+                        android:textSize="12sp" />
 
                     <TextView
-                        android:id="@+id/tv_donorQty2"
+                        android:id="@+id/tv_detail_duration"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="right"
-                        android:text="Closes after 30 days"
+                        android:text="Loading..."
                         android:textColor="@color/text"
                         android:textSize="12sp" />
                 </LinearLayout>
@@ -126,6 +125,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -134,7 +134,7 @@
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/ll_detail_top">
+                app:layout_constraintTop_toBottomOf="@+id/ll_detail_top">
 
 
                 <TextView
@@ -142,11 +142,52 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:gravity="left"
                     android:text="@string/tv_story"
-                    android:textStyle="bold"
                     android:textColor="@color/text"
-                    android:textSize="22sp"/>
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_startDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Loading..."
+                    android:gravity="right"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_detail_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:paddingHorizontal="20dp"
+                android:text="Loading..."
+                android:textColor="@color/text"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+                tools:layout_editor_absoluteX="24dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_donate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="16dp"
+                android:text="@string/btn_donate"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:cornerRadius="30dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_detail_desc" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 

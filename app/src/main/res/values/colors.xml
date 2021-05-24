@@ -14,4 +14,7 @@
     <color name="panel"> #EBEAEC</color>
     <color name="colorProgress">#259651</color>
     <color name="colorProgressBG">#80B996</color>
+    <color name="lightGreenBG">#E4FEEF</color>
+
+
 </resources>
