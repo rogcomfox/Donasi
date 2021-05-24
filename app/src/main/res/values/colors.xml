@@ -12,4 +12,6 @@
     <color name="primaryLight">#F6F1FB</color>
     <color name="textLight">#A1A4B2</color>
     <color name="panel"> #EBEAEC</color>
+    <color name="colorProgress">#259651</color>
+    <color name="colorProgressBG">#80B996</color>
 </resources>
