@@ -59,6 +59,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage:19.2.2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
+    //groupie by lisawray (recyclerview tool)
+    implementation 'com.github.lisawray.groupie:groupie:2.9.0'
+
     //unit test
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
