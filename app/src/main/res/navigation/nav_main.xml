@@ -67,5 +67,9 @@
         android:id="@+id/paymentInstructionFragment"
         android:name="com.nusantarian.donasi.ui.fragment.user.PaymentInstructionFragment"
         android:label="fragment_payment_instruction"
-        tools:layout="@layout/fragment_payment_instruction" />
+        tools:layout="@layout/fragment_payment_instruction" >
+        <argument
+            android:name="paymentUID"
+            app:argType="string" />
+    </fragment>
 </navigation>

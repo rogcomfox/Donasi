@@ -113,13 +113,7 @@ class DonateFragment : Fragment() {
 
         //Setup spinner start
         val spinner = binding.spPayment
-        val items = mutableListOf<String>(
-            "BNI Syariah Transfer",
-            "BNI Transfer",
-            "BRI Transfer",
-            "Mandiri Transfer",
-            "BCA Transfer"
-        )
+        val items = PAYMENT_OPTIONS
         items.sort()
         items.add("")
         val adapter = view?.let {
@@ -132,5 +126,23 @@ class DonateFragment : Fragment() {
         spinner.adapter = adapter
         spinner.setSelection(items.lastIndex)
         //Setup spinner end
+    }
+
+    companion object {
+        val PAYMENT_OPTIONS = mutableListOf<String>(
+            "BNI Syariah Transfer",
+            "BNI Transfer",
+            "BRI Transfer",
+            "Mandiri Transfer",
+            "BCA Transfer"
+        )
+
+        val ACCOUNT_NO = hashMapOf(
+            "BNI Syariah Transfer" to "8800123567",
+            "BNI Transfer" to "8800123567",
+            "BRI Transfer" to "8800123567",
+            "Mandiri Transfer" to "8800123567",
+            "BCA Transfer" to "8800123567",
+        )
     }
 }
