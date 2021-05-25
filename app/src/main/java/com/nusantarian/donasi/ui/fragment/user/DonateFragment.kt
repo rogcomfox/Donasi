@@ -77,11 +77,10 @@ class DonateFragment : Fragment() {
                             .document(paymentUID)
                             .set(hashMapOf("hidden" to false))
                             .addOnSuccessListener {
-                                Toast.makeText(
-                                    getActivity(),
-                                    "Success",
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                findNavController()
+                                    .navigate(
+                                        DonateFragmentDirections.actionDonateFragmentToPaymentInstructionFragment(paymentUID)
+                                    )
                             }
                     }
                     .addOnFailureListener { }
@@ -137,12 +136,20 @@ class DonateFragment : Fragment() {
             "BCA Transfer"
         )
 
+        val ACCOUNT_NAME = hashMapOf(
+            "BNI Syariah Transfer" to "Yayasan Donasi",
+            "BNI Transfer" to "Yayasan Donasi",
+            "BRI Transfer" to "Yayasan Donasi",
+            "Mandiri Transfer" to "Yayasan Donasi",
+            "BCA Transfer" to "Yayasan Donasi"
+        )
+
         val ACCOUNT_NO = hashMapOf(
             "BNI Syariah Transfer" to "8800123567",
             "BNI Transfer" to "8800123567",
             "BRI Transfer" to "8800123567",
             "Mandiri Transfer" to "8800123567",
-            "BCA Transfer" to "8800123567",
+            "BCA Transfer" to "8800123567"
         )
     }
 }

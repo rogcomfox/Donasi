@@ -14,20 +14,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.nusantarian.donasi.R
-import com.nusantarian.donasi.databinding.FragmentDonateBinding
-import com.nusantarian.donasi.databinding.FragmentHomeUserBinding
 import com.nusantarian.donasi.databinding.FragmentPaymentInstructionBinding
 import com.nusantarian.donasi.model.Donation
 import com.nusantarian.donasi.model.HomeDonation
+import com.nusantarian.donasi.model.Payment
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import java.text.DecimalFormat
+import kotlin.random.Random
 
 class PaymentInstructionFragment : Fragment() {
 
     private var _binding: FragmentPaymentInstructionBinding? = null
     private val binding get() = _binding!!
-    //private val args: PaymentInstructionFragmentArgs by navArgs()
+    private val args: PaymentInstructionFragmentArgs by navArgs()
 
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
@@ -45,10 +45,28 @@ class PaymentInstructionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-
+        loadData()
     }
 
     private fun loadData() {
+        db.collection("payments").document(args.paymentUID).get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    val payment = Payment.docToPayment(document)
+
+                    val uniqueCode = Random.nextInt(1, 999)
+                    val total = uniqueCode + payment.donation
+
+                    var formattedPrice = DecimalFormat("#,###").format(total)
+                    binding.tvDonationTotal.text = "Rp $formattedPrice"
+                    formattedPrice = DecimalFormat("#,###").format(payment.donation)
+                    binding.tvDonationNominal.text = "Rp $formattedPrice"
+                    binding.tvDonationUnique.text = uniqueCode.toString()
+
+                    binding.tvAccountName.text = "${payment.bank.removeSuffix("Transfer")}a/n ${DonateFragment.ACCOUNT_NAME[payment.bank]}"
+                    binding.tvAccountNumber.text = "${DonateFragment.ACCOUNT_NO[payment.bank]}"
+
+                }
+            }
     }
 }
