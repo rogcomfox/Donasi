@@ -11,11 +11,11 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.nusantarian.donasi.R
 import com.nusantarian.donasi.databinding.FragmentDetailDonationBinding
 import com.nusantarian.donasi.model.Donation
 import java.text.DecimalFormat
+import java.time.LocalDate
 
 class DetailDonationFragment : Fragment() {
 
@@ -44,10 +44,14 @@ class DetailDonationFragment : Fragment() {
         db = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
 
-        setDisplay(view)
+        loadData()
+
+        binding.btnDonate.setOnClickListener {
+
+        }
     }
 
-    private fun setDisplay(view: View){
+    private fun loadData(){
 
         val donationDoc = db.collection("donations").document(args.donationUID)
         donationDoc.get()
@@ -55,22 +59,24 @@ class DetailDonationFragment : Fragment() {
                 if (document != null) {
                     val donation = Donation.docToDonation(document)
 
-                    view.findViewById<TextView>(R.id.tv_detail_title).text = donation.title
+                    binding.tvDetailTitle.text = donation.title
                     var formattedPrice = DecimalFormat("#,###").format(donation.cashCollected)
-                    view.findViewById<TextView>(R.id.tv_cashCollected).text = "Rp $formattedPrice"
+                    binding.tvCashCollected.text = "Rp $formattedPrice"
                     formattedPrice = DecimalFormat("#,###").format(donation.cashTarget)
-                    view.findViewById<TextView>(R.id.tv_cashTarget).text = "collected from Rp $formattedPrice"
-                    view.findViewById<ProgressBar>(R.id.pb_cash).max = donation.cashTarget
-                    view.findViewById<ProgressBar>(R.id.pb_cash).progress = donation.cashCollected
+                    binding.tvCashTarget.text = "collected from Rp $formattedPrice"
+                    binding.pbCash.max = donation.cashTarget
+                    binding.pbCash.progress = donation.cashCollected
 
-                    view.findViewById<TextView>(R.id.tv_detail_duration).text = donation.currentDuration().toString() + " days remaining";
-                    view.findViewById<TextView>(R.id.tv_donorQty).text = donation.donorQty.toString() + " donations";
-                    view.findViewById<TextView>(R.id.tv_startDate).text = donation.startDate;
+                    binding.tvDetailDuration.text = donation.currentDuration().toString() + " days remaining";
+                    binding.tvDonorQty.text = donation.donorQty.toString() + " donations";
+                    binding.tvStartDate.text = donation.startDate;
 
-                    view.findViewById<TextView>(R.id.tv_detail_desc).text = donation.desc;
+                    binding.tvDetailDesc.text = donation.desc;
 
                 } else {
                 }
             }
+
+
     }
 }

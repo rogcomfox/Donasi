@@ -1,11 +1,8 @@
 package com.nusantarian.donasi.ui.fragment.user
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.SearchView
-import android.widget.TextView
-import android.widget.VideoView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,19 +13,15 @@ import com.nusantarian.donasi.R
 import com.nusantarian.donasi.databinding.FragmentHomeUserBinding
 import com.nusantarian.donasi.model.Donation
 import com.nusantarian.donasi.model.HomeDonation
-import com.nusantarian.donasi.ui.fragment.landing.LoginFragmentDirections
 import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.GroupieAdapter
 import com.xwray.groupie.GroupieViewHolder
-import com.xwray.groupie.Item
-import kotlin.math.log
 
 class HomeUserFragment : Fragment() {
 
     private var _binding: FragmentHomeUserBinding? = null
     private val binding get() = _binding!!
-    lateinit var db: FirebaseFirestore
-    lateinit var auth: FirebaseAuth
+    val db: FirebaseFirestore = FirebaseFirestore.getInstance()
+    val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,35 +36,32 @@ class HomeUserFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        db = FirebaseFirestore.getInstance()
-        auth = FirebaseAuth.getInstance()
-
-        setIntroduction(view)
-        setSearchView(view)
-        displayDonations(view, arrayOf(""))
+        loadUserData()
+        setSearchView()
+        loadDonationData(arrayOf(""))
     }
 
-    private fun setIntroduction(view: View) {
+    private fun loadUserData() {
         val userDoc = db.collection("users").document(auth.currentUser.uid)
         userDoc.get()
             .addOnSuccessListener { document ->
                 if (document != null) {
-                    view.findViewById<TextView>(R.id.tv_intro).text = "Hello, " + document["name"]
+                    binding.tvIntro.text = "Hello, " + document["name"]
                 } else {
-                    view.findViewById<TextView>(R.id.tv_intro).text = "Hello, NULL"
+                    binding.tvIntro.text = "Hello, NULL"
                 }
             }
     }
 
-    private fun setSearchView(view: View) {
-        var searchView = view.findViewById<SearchView>(R.id.sv_home)
+    private fun setSearchView() {
+        var searchView = binding.svHome
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query != null) {
                     val queries = query.split(" ").toTypedArray()
-                    displayDonations(view, queries)
-                    view.findViewById<TextView>(R.id.tv_category_1).text =
+                    loadDonationData(queries)
+                    binding.tvCategory1.text =
                         "Results for " + '"' + queries[0] + "..." + '"'
                 }
                 return false
@@ -84,8 +74,8 @@ class HomeUserFragment : Fragment() {
 
         searchView.setOnCloseListener(object : SearchView.OnCloseListener {
             override fun onClose(): Boolean {
-                displayDonations(view, arrayOf(""))
-                view.findViewById<TextView>(R.id.tv_category_1).text =
+                loadDonationData(arrayOf(""))
+                binding.tvCategory1.text =
                     resources.getString(R.string.tv_category_1)
                 return false
             }
@@ -93,10 +83,10 @@ class HomeUserFragment : Fragment() {
         })
     }
 
-    private fun displayDonations(view: View, keyword: Array<String>) {
+    private fun loadDonationData(keyword: Array<String>) {
         val linearLayoutManager: LinearLayoutManager = LinearLayoutManager(activity)
         linearLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
-        view.findViewById<RecyclerView>(R.id.rv_donations).layoutManager = linearLayoutManager
+        binding.rvDonations.layoutManager = linearLayoutManager
 
         val adapter = GroupAdapter<GroupieViewHolder>()
         val donationList = mutableListOf<HomeDonation>()
@@ -141,7 +131,7 @@ class HomeUserFragment : Fragment() {
                 }
             }
 
-        view.findViewById<RecyclerView>(R.id.rv_donations).adapter = adapter
+        binding.rvDonations.adapter = adapter
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
