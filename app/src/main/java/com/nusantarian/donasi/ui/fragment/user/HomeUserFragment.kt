@@ -1,18 +1,19 @@
 package com.nusantarian.donasi.ui.fragment.user
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.nusantarian.donasi.R
 import com.nusantarian.donasi.databinding.FragmentHomeUserBinding
 import com.nusantarian.donasi.model.Donation
 import com.nusantarian.donasi.model.HomeDonation
+import com.nusantarian.donasi.ui.activity.LandingActivity
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 
@@ -20,7 +21,7 @@ class HomeUserFragment : Fragment() {
 
     private var _binding: FragmentHomeUserBinding? = null
     private val binding get() = _binding!!
-    val db: FirebaseFirestore = FirebaseFirestore.getInstance()
+    private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
     val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
     override fun onCreateView(
@@ -42,7 +43,7 @@ class HomeUserFragment : Fragment() {
     }
 
     private fun loadUserData() {
-        val userDoc = db.collection("users").document(auth.currentUser.uid)
+        val userDoc = db.collection("users").document(auth.currentUser!!.uid)
         userDoc.get()
             .addOnSuccessListener { document ->
                 if (document != null) {
@@ -54,7 +55,7 @@ class HomeUserFragment : Fragment() {
     }
 
     private fun setSearchView() {
-        var searchView = binding.svHome
+        val searchView = binding.svHome
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -84,7 +85,7 @@ class HomeUserFragment : Fragment() {
     }
 
     private fun loadDonationData(keyword: Array<String>) {
-        val linearLayoutManager: LinearLayoutManager = LinearLayoutManager(activity)
+        val linearLayoutManager = LinearLayoutManager(activity)
         linearLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
         binding.rvDonations.layoutManager = linearLayoutManager
 
@@ -95,11 +96,11 @@ class HomeUserFragment : Fragment() {
             .get()
             .addOnSuccessListener { result ->
                 for (document in result) {
-                    var donation: Donation = Donation.docToDonation(document)
+                    val donation: Donation = Donation.docToDonation(document)
 
                     //Search System
                     if (donation.currentDuration() >= 0) {
-                        if (keyword[0].equals("")) {
+                        if (keyword[0] == "") {
                             donationList.add(HomeDonation(donation, document.id))
                         } else {
                             var point = 0
@@ -116,11 +117,11 @@ class HomeUserFragment : Fragment() {
                 }
 
                 //Sorting Latest Donation
-                donationList.reversed().forEach() {
+                donationList.reversed().forEach {
                     adapter.add(it)
                 }
 
-                adapter.setOnItemClickListener { item, view ->
+                adapter.setOnItemClickListener { item, _ ->
                     val donation = item as HomeDonation
                     findNavController()
                         .navigate(
@@ -145,6 +146,11 @@ class HomeUserFragment : Fragment() {
                 findNavController().navigate(HomeUserFragmentDirections.actionHomeUserFragmentToHistoryUserFragment())
             R.id.nav_profile ->
                 findNavController().navigate(HomeUserFragmentDirections.actionHomeUserFragmentToProfileFragment())
+            R.id.nav_log_out -> {
+                auth.signOut()
+                startActivity(Intent(requireActivity(), LandingActivity::class.java))
+                requireActivity().finishAffinity()
+            }
         }
         return super.onOptionsItemSelected(item)
     }
