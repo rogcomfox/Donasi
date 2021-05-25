@@ -54,26 +54,36 @@ class DonateFragment : Fragment() {
                     .toInt() >= 10000
             ) {
 
-                Toast.makeText(
-                    getActivity(),
-                    "Success.",
-                    Toast.LENGTH_SHORT
-                ).show()
-
-                val date = SimpleDateFormat("yyyy-MM-dd").format(LocalDate.now())
+                val date = SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time)
 
                 val payment = hashMapOf(
-                    "userUID" to auth.currentUser.uid,
+                    "userUID" to auth.currentUser?.uid,
                     "donationUID" to args.donationUID,
                     "donation" to binding.etDonate.text.toString().toInt(),
                     "bank" to binding.spPayment.selectedItem.toString(),
                     "transferDate" to date,
-                    "verified" to false
+                    "verified" to false,
+                    "invoiceURL" to ""
                 )
 
-                db.collection("cities").document("LA")
-                    .set(city)
-                    .addOnSuccessListener { }
+                val paymentUID = date + UUID.randomUUID()
+
+                db.collection("payments").document(paymentUID)
+                    .set(payment)
+                    .addOnSuccessListener {
+                        db.collection("users")
+                            .document(auth.currentUser?.uid!!)
+                            .collection("mydonations")
+                            .document(paymentUID)
+                            .set(hashMapOf("hidden" to false))
+                            .addOnSuccessListener {
+                                Toast.makeText(
+                                    getActivity(),
+                                    "Success",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                    }
                     .addOnFailureListener { }
 
 

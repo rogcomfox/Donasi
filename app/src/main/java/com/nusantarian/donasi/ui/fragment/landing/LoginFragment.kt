@@ -64,7 +64,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
         auth.signInWithEmailAndPassword(email, pass).addOnCompleteListener {
             if (it.isSuccessful) {
                 binding.progress.visibility = View.GONE
-                if (auth.currentUser.uid == ADMIN_UID)
+                if (auth.currentUser?.uid == ADMIN_UID)
                     startActivity(Intent(requireContext(), AdminMainActivity::class.java))
                 else
                     startActivity(Intent(requireContext(), MainActivity::class.java))
