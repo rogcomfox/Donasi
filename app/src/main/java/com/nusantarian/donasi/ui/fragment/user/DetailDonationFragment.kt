@@ -2,27 +2,23 @@ package com.nusantarian.donasi.ui.fragment.user
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.nusantarian.donasi.R
 import com.nusantarian.donasi.databinding.FragmentDetailDonationBinding
 import com.nusantarian.donasi.model.Donation
 import java.text.DecimalFormat
-import java.time.LocalDate
 
 class DetailDonationFragment : Fragment() {
 
     private var _binding: FragmentDetailDonationBinding? = null
     private val binding get() = _binding!!
-    private val args:DetailDonationFragmentArgs by navArgs()
+    private val args: DetailDonationFragmentArgs by navArgs()
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
 
     override fun onCreateView(
@@ -35,7 +31,16 @@ class DetailDonationFragment : Fragment() {
         (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
         (activity as AppCompatActivity).supportActionBar?.setDisplayShowHomeEnabled(true)
+        setHasOptionsMenu(true)
         return binding.root
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home ->
+                requireActivity().onBackPressed()
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -44,7 +49,7 @@ class DetailDonationFragment : Fragment() {
         loadData()
     }
 
-    private fun loadData(){
+    private fun loadData() {
 
         val donationDoc = db.collection("donations").document(args.donationUID)
         donationDoc.get()
@@ -60,7 +65,8 @@ class DetailDonationFragment : Fragment() {
                     binding.pbCash.max = donation.cashTarget
                     binding.pbCash.progress = donation.cashCollected
 
-                    binding.tvDetailDuration.text = donation.currentDuration().toString() + " days remaining";
+                    binding.tvDetailDuration.text =
+                        donation.currentDuration().toString() + " days remaining";
                     binding.tvDonorQty.text = donation.donorQty.toString() + " donations";
                     binding.tvStartDate.text = donation.startDate;
 
@@ -69,7 +75,9 @@ class DetailDonationFragment : Fragment() {
                     binding.btnDonate.setOnClickListener {
                         findNavController()
                             .navigate(
-                                DetailDonationFragmentDirections.actionDetailDonationFragmentToDonateFragment(args.donationUID)
+                                DetailDonationFragmentDirections.actionDetailDonationFragmentToDonateFragment(
+                                    args.donationUID
+                                )
                             )
 
                     }
