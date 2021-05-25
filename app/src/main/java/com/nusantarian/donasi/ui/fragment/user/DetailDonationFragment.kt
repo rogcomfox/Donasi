@@ -8,6 +8,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -47,6 +48,10 @@ class DetailDonationFragment : Fragment() {
         loadData()
 
         binding.btnDonate.setOnClickListener {
+            findNavController()
+                .navigate(
+                    DetailDonationFragmentDirections.actionDetailDonationFragmentToDonateFragment(args.donationUID)
+                    )
 
         }
     }

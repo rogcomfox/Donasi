@@ -28,6 +28,9 @@
         <argument
             android:name="donationUID"
             app:argType="string" />
+        <action
+            android:id="@+id/action_detailDonationFragment_to_donateFragment"
+            app:destination="@id/donateFragment" />
     </fragment>
     <fragment
         android:id="@+id/historyUserFragment"
@@ -48,4 +51,13 @@
         android:name="com.nusantarian.donasi.ui.fragment.user.ChangePassFragment"
         android:label="fragment_change_pass"
         tools:layout="@layout/fragment_change_pass" />
+    <fragment
+        android:id="@+id/donateFragment"
+        android:name="com.nusantarian.donasi.ui.fragment.user.DonateFragment"
+        android:label="fragment_donate"
+        tools:layout="@layout/fragment_donate" >
+        <argument
+            android:name="donationUID"
+            app:argType="string" />
+    </fragment>
 </navigation>
