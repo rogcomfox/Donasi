@@ -27,10 +27,10 @@ class PaymentInstructionFragment : Fragment() {
 
     private var _binding: FragmentPaymentInstructionBinding? = null
     private val binding get() = _binding!!
-    private val args: PaymentInstructionFragmentArgs by navArgs()
+    //private val args: PaymentInstructionFragmentArgs by navArgs()
 
-    val db: FirebaseFirestore = FirebaseFirestore.getInstance()
-    val auth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -27,7 +27,7 @@ data class Donation(
 ){
     companion object{
         fun docToDonation(document: QueryDocumentSnapshot): Donation{
-            var donation: Donation = Donation(
+            val donation: Donation = Donation(
                 document["title"].toString(),
                 document["desc"].toString(),
                 document["startDate"].toString(),
@@ -41,7 +41,7 @@ data class Donation(
         }
 
         fun docToDonation(document: DocumentSnapshot): Donation{
-            var donation: Donation = Donation(
+            val donation: Donation = Donation(
                 document["title"].toString(),
                 document["desc"].toString(),
                 document["startDate"].toString(),

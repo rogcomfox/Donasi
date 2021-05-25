@@ -21,6 +21,9 @@ import com.nusantarian.donasi.model.HomeDonation
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import java.text.DecimalFormat
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.util.*
 
 class DonateFragment : Fragment() {
 
@@ -47,13 +50,34 @@ class DonateFragment : Fragment() {
         loadData()
 
         binding.btnContinue.setOnClickListener {
-            if(binding.spPayment.selectedItem != "" && binding.etDonate.text.toString().toInt() >= 10000){
+            if (binding.spPayment.selectedItem != "" && binding.etDonate.text.toString()
+                    .toInt() >= 10000
+            ) {
+
                 Toast.makeText(
                     getActivity(),
                     "Success.",
                     Toast.LENGTH_SHORT
                 ).show()
-            }else{
+
+                val date = SimpleDateFormat("yyyy-MM-dd").format(LocalDate.now())
+
+                val payment = hashMapOf(
+                    "userUID" to auth.currentUser.uid,
+                    "donationUID" to args.donationUID,
+                    "donation" to binding.etDonate.text.toString().toInt(),
+                    "bank" to binding.spPayment.selectedItem.toString(),
+                    "transferDate" to date,
+                    "verified" to false
+                )
+
+                db.collection("cities").document("LA")
+                    .set(city)
+                    .addOnSuccessListener { }
+                    .addOnFailureListener { }
+
+
+            } else {
                 Toast.makeText(
                     getActivity(),
                     "Please enter all fields correctly.",
@@ -79,7 +103,13 @@ class DonateFragment : Fragment() {
 
         //Setup spinner start
         val spinner = binding.spPayment
-        val items = mutableListOf<String>("BNI Syariah Transfer", "BNI Transfer", "BRI Transfer", "Mandiri Transfer", "BCA Transfer")
+        val items = mutableListOf<String>(
+            "BNI Syariah Transfer",
+            "BNI Transfer",
+            "BRI Transfer",
+            "Mandiri Transfer",
+            "BCA Transfer"
+        )
         items.sort()
         items.add("")
         val adapter = view?.let {
