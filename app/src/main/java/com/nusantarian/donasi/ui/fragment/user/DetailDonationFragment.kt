@@ -23,8 +23,7 @@ class DetailDonationFragment : Fragment() {
     private var _binding: FragmentDetailDonationBinding? = null
     private val binding get() = _binding!!
     private val args:DetailDonationFragmentArgs by navArgs()
-    lateinit var db: FirebaseFirestore
-    lateinit var auth: FirebaseAuth
+    private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,18 +41,7 @@ class DetailDonationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        db = FirebaseFirestore.getInstance()
-        auth = FirebaseAuth.getInstance()
-
         loadData()
-
-        binding.btnDonate.setOnClickListener {
-            findNavController()
-                .navigate(
-                    DetailDonationFragmentDirections.actionDetailDonationFragmentToDonateFragment(args.donationUID)
-                    )
-
-        }
     }
 
     private fun loadData(){
@@ -78,7 +66,14 @@ class DetailDonationFragment : Fragment() {
 
                     binding.tvDetailDesc.text = donation.desc;
 
-                } else {
+                    binding.btnDonate.setOnClickListener {
+                        findNavController()
+                            .navigate(
+                                DetailDonationFragmentDirections.actionDetailDonationFragmentToDonateFragment(args.donationUID)
+                            )
+
+                    }
+
                 }
             }
 

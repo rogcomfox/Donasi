@@ -30,7 +30,6 @@ class PaymentInstructionFragment : Fragment() {
     private val args: PaymentInstructionFragmentArgs by navArgs()
 
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
-    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,18 +53,23 @@ class PaymentInstructionFragment : Fragment() {
                 if (document != null) {
                     val payment = Payment.docToPayment(document)
 
-                    val uniqueCode = Random.nextInt(1, 999)
-                    val total = uniqueCode + payment.donation
+                    val total = payment.uniqueCode + payment.donation
 
                     var formattedPrice = DecimalFormat("#,###").format(total)
                     binding.tvDonationTotal.text = "Rp $formattedPrice"
                     formattedPrice = DecimalFormat("#,###").format(payment.donation)
                     binding.tvDonationNominal.text = "Rp $formattedPrice"
-                    binding.tvDonationUnique.text = uniqueCode.toString()
+                    binding.tvDonationUnique.text = payment.uniqueCode.toString()
 
                     binding.tvAccountName.text = "${payment.bank.removeSuffix("Transfer")}a/n ${DonateFragment.ACCOUNT_NAME[payment.bank]}"
                     binding.tvAccountNumber.text = "${DonateFragment.ACCOUNT_NO[payment.bank]}"
 
+                    binding.btnSeePaymentStatus.setOnClickListener {
+                        findNavController()
+                            .navigate(
+                                PaymentInstructionFragmentDirections.actionPaymentInstructionFragmentToHistoryUserFragment()
+                            )
+                    }
                 }
             }
     }

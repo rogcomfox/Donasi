@@ -210,7 +210,7 @@
             </LinearLayout>
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_continue"
+                android:id="@+id/btn_seePaymentStatus"
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
                 android:layout_marginStart="32dp"

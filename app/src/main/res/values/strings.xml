@@ -50,7 +50,7 @@
     <string name="nav_detailDonation">More Information</string>
     <string name="nav_paymentInstruction">Payment Instruction</string>
     <string name="btn_seePaymentStatus">See Payment Status</string>
-    <string name="tv_payment_warning">Transfer before 1x24 hours runs out, or your donation will be automatically canceled by the system.</string>
+    <string name="tv_payment_warning">Complete your transaction in 1x24 hours. Otherwise, your donation will be automatically canceled by the system.</string>
 
 
 </resources>

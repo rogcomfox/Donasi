@@ -71,5 +71,8 @@
         <argument
             android:name="paymentUID"
             app:argType="string" />
+        <action
+            android:id="@+id/action_paymentInstructionFragment_to_historyUserFragment"
+            app:destination="@id/historyUserFragment" />
     </fragment>
 </navigation>

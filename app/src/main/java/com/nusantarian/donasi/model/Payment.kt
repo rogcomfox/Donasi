@@ -7,6 +7,7 @@ data class Payment (
     val userUID: String,
     val donationUID: String,
     val donation: Int,
+    val uniqueCode: Int,
     val bank: String,
     val transferDate: String,
     val verified: Boolean,
@@ -15,33 +16,31 @@ data class Payment (
 
     companion object{
         fun docToPayment(document: QueryDocumentSnapshot): Payment{
-            val payment = Payment(
+
+            return Payment(
                 document["userUID"].toString(),
                 document["donationUID"].toString(),
                 document["donation"].toString().toInt(),
+                document["uniqueCode"].toString().toInt(),
                 document["bank"].toString(),
                 document["transferDate"].toString(),
                 document["verified"].toString().toBoolean(),
                 document["invoiceURL"].toString()
             )
-
-
-            return payment
         }
 
         fun docToPayment(document: DocumentSnapshot): Payment{
-            val payment = Payment(
+
+            return Payment(
                 document["userUID"].toString(),
                 document["donationUID"].toString(),
                 document["donation"].toString().toInt(),
+                document["uniqueCode"].toString().toInt(),
                 document["bank"].toString(),
                 document["transferDate"].toString(),
                 document["verified"].toString().toBoolean(),
                 document["invoiceURL"].toString()
             )
-
-
-            return payment
         }
     }
 }

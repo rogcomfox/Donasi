@@ -24,6 +24,7 @@ import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.util.*
+import kotlin.random.Random
 
 class DonateFragment : Fragment() {
 
@@ -48,52 +49,6 @@ class DonateFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         loadData()
-
-        binding.btnContinue.setOnClickListener {
-            if (binding.spPayment.selectedItem != "" && binding.etDonate.text.toString()
-                    .toInt() >= 10000
-            ) {
-
-                val date = SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time)
-
-                val payment = hashMapOf(
-                    "userUID" to auth.currentUser?.uid,
-                    "donationUID" to args.donationUID,
-                    "donation" to binding.etDonate.text.toString().toInt(),
-                    "bank" to binding.spPayment.selectedItem.toString(),
-                    "transferDate" to date,
-                    "verified" to false,
-                    "invoiceURL" to ""
-                )
-
-                val paymentUID = date + UUID.randomUUID()
-
-                db.collection("payments").document(paymentUID)
-                    .set(payment)
-                    .addOnSuccessListener {
-                        db.collection("users")
-                            .document(auth.currentUser?.uid!!)
-                            .collection("mydonations")
-                            .document(paymentUID)
-                            .set(hashMapOf("hidden" to false))
-                            .addOnSuccessListener {
-                                findNavController()
-                                    .navigate(
-                                        DonateFragmentDirections.actionDonateFragmentToPaymentInstructionFragment(paymentUID)
-                                    )
-                            }
-                    }
-                    .addOnFailureListener { }
-
-
-            } else {
-                Toast.makeText(
-                    getActivity(),
-                    "Please enter all fields correctly.",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
     }
 
     private fun loadData() {
@@ -105,26 +60,74 @@ class DonateFragment : Fragment() {
 
                     binding.tvTitle.text = donation.title
 
-                } else {
+                    //Setup spinner start
+                    val spinner = binding.spPayment
+                    val items = PAYMENT_OPTIONS
+                    items.sort()
+                    items.add("")
+                    val adapter = view?.let {
+                        ArrayAdapter<String>(
+                            it.context,
+                            android.R.layout.simple_spinner_dropdown_item,
+                            items
+                        )
+                    }
+                    spinner.adapter = adapter
+                    spinner.setSelection(items.lastIndex)
+                    //Setup spinner end
+
+                    binding.btnContinue.setOnClickListener {
+                        if (binding.spPayment.selectedItem != "" && binding.etDonate.text.toString()
+                                .toInt() >= 10000
+                        ) {
+
+                            val date = SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time)
+                            val uniqueCode = Random.nextInt(1, 999)
+
+                            val payment = hashMapOf(
+                                "userUID" to auth.currentUser?.uid,
+                                "donationUID" to args.donationUID,
+                                "donation" to binding.etDonate.text.toString().toInt(),
+                                "uniqueCode" to uniqueCode,
+                                "bank" to binding.spPayment.selectedItem.toString(),
+                                "transferDate" to date,
+                                "verified" to false,
+                                "invoiceURL" to ""
+                            )
+
+                            val paymentUID = date + UUID.randomUUID()
+
+                            db.collection("payments").document(paymentUID)
+                                .set(payment)
+                                .addOnSuccessListener {
+                                    db.collection("users")
+                                        .document(auth.currentUser?.uid!!)
+                                        .collection("mydonations")
+                                        .document(paymentUID)
+                                        .set(hashMapOf("hidden" to false))
+                                        .addOnSuccessListener {
+                                            findNavController()
+                                                .navigate(
+                                                    DonateFragmentDirections.actionDonateFragmentToPaymentInstructionFragment(paymentUID)
+                                                )
+                                        }
+                                }
+                                .addOnFailureListener { }
+
+
+                        } else {
+                            Toast.makeText(
+                                getActivity(),
+                                "Please enter all fields correctly.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
                 }
             }
 
 
-        //Setup spinner start
-        val spinner = binding.spPayment
-        val items = PAYMENT_OPTIONS
-        items.sort()
-        items.add("")
-        val adapter = view?.let {
-            ArrayAdapter<String>(
-                it.context,
-                android.R.layout.simple_spinner_dropdown_item,
-                items
-            )
-        }
-        spinner.adapter = adapter
-        spinner.setSelection(items.lastIndex)
-        //Setup spinner end
+
     }
 
     companion object {
@@ -137,19 +140,19 @@ class DonateFragment : Fragment() {
         )
 
         val ACCOUNT_NAME = hashMapOf(
-            "BNI Syariah Transfer" to "Yayasan Donasi",
-            "BNI Transfer" to "Yayasan Donasi",
-            "BRI Transfer" to "Yayasan Donasi",
-            "Mandiri Transfer" to "Yayasan Donasi",
-            "BCA Transfer" to "Yayasan Donasi"
+            "BNI Syariah Transfer" to "Yayasan Donasi BNS",
+            "BNI Transfer" to "Yayasan Donasi BN",
+            "BRI Transfer" to "Yayasan Donasi BR",
+            "Mandiri Transfer" to "Yayasan Donasi MA",
+            "BCA Transfer" to "Yayasan Donasi BC"
         )
 
         val ACCOUNT_NO = hashMapOf(
             "BNI Syariah Transfer" to "8800123567",
-            "BNI Transfer" to "8800123567",
-            "BRI Transfer" to "8800123567",
-            "Mandiri Transfer" to "8800123567",
-            "BCA Transfer" to "8800123567"
+            "BNI Transfer" to "8801123567",
+            "BRI Transfer" to "8802123567",
+            "Mandiri Transfer" to "8803123567",
+            "BCA Transfer" to "8804123567"
         )
     }
 }
