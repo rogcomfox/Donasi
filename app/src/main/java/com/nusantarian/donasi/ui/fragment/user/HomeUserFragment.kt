@@ -22,7 +22,7 @@ class HomeUserFragment : Fragment() {
     private var _binding: FragmentHomeUserBinding? = null
     private val binding get() = _binding!!
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
-    val auth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,6 +48,10 @@ class HomeUserFragment : Fragment() {
             .addOnSuccessListener { document ->
                 if (document != null) {
                     binding.tvIntro.text = "Hello, " + document["name"]
+                    binding.tvIntro.setOnClickListener {
+                        findNavController().navigate(HomeUserFragmentDirections.actionHomeUserFragmentToHistoryUserFragment())
+                    }
+
                 } else {
                     binding.tvIntro.text = "Hello, NULL"
                 }
@@ -130,9 +134,10 @@ class HomeUserFragment : Fragment() {
                             )
                         )
                 }
+
+                binding.rvDonations.adapter = adapter
             }
 
-        binding.rvDonations.adapter = adapter
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

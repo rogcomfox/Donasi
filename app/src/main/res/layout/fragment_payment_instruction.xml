@@ -90,7 +90,7 @@
                         android:layout_weight="1"
                         android:text="@string/tv_donation"
                         android:textColor="@color/text"
-                        android:textSize="13dp" />
+                        android:textSize="13sp" />
 
                     <TextView
                         android:id="@+id/tv_donation_nominal"
@@ -100,7 +100,7 @@
                         android:gravity="right"
                         android:text="Rp Loading..."
                         android:textColor="@color/text"
-                        android:textSize="13dp" />
+                        android:textSize="13sp" />
 
                 </LinearLayout>
 
@@ -128,7 +128,7 @@
                         android:layout_weight="1"
                         android:text="@string/tv_uniqueCode"
                         android:textColor="@color/text"
-                        android:textSize="13dp" />
+                        android:textSize="13sp" />
 
                     <TextView
                         android:id="@+id/tv_donation_unique"
@@ -138,7 +138,7 @@
                         android:gravity="right"
                         android:text="Loading..."
                         android:textColor="@color/text"
-                        android:textSize="13dp" />
+                        android:textSize="13sp" />
 
                 </LinearLayout>
 
@@ -161,7 +161,7 @@
                     android:layout_weight="1"
                     android:text="@string/tv_payment_info"
                     android:textColor="@color/text"
-                    android:textSize="14dp" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/tv_account_name"
@@ -172,7 +172,7 @@
                     android:layout_weight="1"
                     android:text="Loading... a/n Loading..."
                     android:textColor="@color/black"
-                    android:textSize="14dp"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -183,7 +183,7 @@
                     android:layout_weight="1"
                     android:text="Loading..."
                     android:textColor="@color/black"
-                    android:textSize="14dp"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <View
@@ -205,7 +205,7 @@
                     android:layout_weight="1"
                     android:text="@string/tv_payment_warning"
                     android:textColor="@color/textLight"
-                    android:textSize="14dp" />
+                    android:textSize="14sp" />
 
             </LinearLayout>
 

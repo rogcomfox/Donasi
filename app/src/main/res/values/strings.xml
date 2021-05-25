@@ -16,7 +16,7 @@
     <string name="til_confirm">Confirm Password</string>
     <string name="btn_register">Register</string>
     <string name="tv_category_1">Popular</string>
-    <string name="tv_quote">Go ahead, even small things can make a big difference.</string>
+    <string name="tv_quote_home">Go ahead, even small things can make a big difference.</string>
     <string name="tv_search">Search</string>
     <string name="btn_donate">Donate</string>
     <string name="tv_readMore"><u>Read More</u></string>
@@ -31,6 +31,10 @@
     <string name="tv_donation">Donation</string>
     <string name="tv_uniqueCode">Unique Code</string>
     <string name="tv_payment_info">Payments are made to the bank account:</string>
+    <string name="btn_seePaymentStatus">See Payment Status</string>
+    <string name="tv_payment_warning">Complete your transaction in 1x24 hours. Otherwise, your donation will be automatically canceled by the system.</string>
+    <string name="tv_takeALook">Take a Look</string>
+    <string name="tv_quote_history">Hopefully, your past donation can motivate you to not stop sharing and make you love yourself because you are a pretty good person, cheers!</string>
 
     <!--Text-->
     <string name="text_empty">This is Empty Field</string>
@@ -49,8 +53,6 @@
     <string name="nav_donate">Donate</string>
     <string name="nav_detailDonation">More Information</string>
     <string name="nav_paymentInstruction">Payment Instruction</string>
-    <string name="btn_seePaymentStatus">See Payment Status</string>
-    <string name="tv_payment_warning">Complete your transaction in 1x24 hours. Otherwise, your donation will be automatically canceled by the system.</string>
-
+    <string name="nav_historyUser">My Donations</string>
 
 </resources>

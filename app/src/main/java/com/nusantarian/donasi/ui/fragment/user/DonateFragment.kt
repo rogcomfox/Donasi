@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.nusantarian.donasi.R
@@ -83,6 +84,7 @@ class DonateFragment : Fragment() {
 
                             val date = SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time)
                             val uniqueCode = Random.nextInt(1, 999)
+                            val timestamp = Timestamp.now().toDate()
 
                             val payment = hashMapOf(
                                 "userUID" to auth.currentUser?.uid,
@@ -92,10 +94,11 @@ class DonateFragment : Fragment() {
                                 "bank" to binding.spPayment.selectedItem.toString(),
                                 "transferDate" to date,
                                 "verified" to false,
-                                "invoiceURL" to ""
+                                "invoiceURL" to "",
+                                "timestamp" to timestamp
                             )
 
-                            val paymentUID = date + UUID.randomUUID()
+                            val paymentUID = UUID.randomUUID().toString()
 
                             db.collection("payments").document(paymentUID)
                                 .set(payment)
@@ -104,7 +107,7 @@ class DonateFragment : Fragment() {
                                         .document(auth.currentUser?.uid!!)
                                         .collection("mydonations")
                                         .document(paymentUID)
-                                        .set(hashMapOf("hidden" to false))
+                                        .set(hashMapOf("timestamp" to timestamp))
                                         .addOnSuccessListener {
                                             findNavController()
                                                 .navigate(

@@ -15,6 +15,5 @@
     <color name="colorProgress">#259651</color>
     <color name="colorProgressBG">#80B996</color>
     <color name="lightGreenBG">#E4FEEF</color>
-
-
+    <color name="darkGrey">#818181</color>
 </resources>
