@@ -44,7 +44,7 @@ class MainAdminFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_receipt ->
-                findNavController().navigate(MainAdminFragmentDirections.actionMainAdminFragmentToListDonationPaymentFragment())
+                findNavController().navigate(MainAdminFragmentDirections.actionMainAdminFragmentToPaymentOrgFragment())
             R.id.nav_profile ->
                 Toast.makeText(context, "Coming Soon", Toast.LENGTH_SHORT).show()
             R.id.nav_log_out -> {

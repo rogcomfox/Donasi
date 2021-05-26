@@ -49,7 +49,7 @@
     <string name="tv_category_1_admin">Donation Opened</string>
     <string name="text_date">%1$d-%2$d-%3$d</string>
     <string name="tv_edit_donation">Edit Donation</string>
-    <string name="tv_detail_payment">Detail Payment</string>
+    <string name="tv_detail_payment">Payment Details</string>
 
     <!--icon strings-->
     <string name="nav_history">History</string>
@@ -61,6 +61,7 @@
     <string name="nav_detailDonation">More Information</string>
     <string name="nav_paymentInstruction">Payment Instruction</string>
     <string name="nav_historyUser">My Donations</string>
+    <string name="nav_adminOrganizer">Donations</string>
     <string name="fab_add">Add Data</string>
     <string name="nav_receipt">List Payment</string>
     <string name="til_title">Title</string>
@@ -70,5 +71,9 @@
     <string name="til_story">Story</string>
     <string name="btn_start_fund">Start Fundraising</string>
     <string name="btn_save">Save Data</string>
+    <string name="tv_admDetail_name">Account Name</string>
+    <string name="tv_admDetail_bank">Bank Transfer</string>
+    <string name="tv_admDetail_donation">Donation</string>
+    <string name="tv_admDetail_transferDate">Transfer Date</string>
 
 </resources>
