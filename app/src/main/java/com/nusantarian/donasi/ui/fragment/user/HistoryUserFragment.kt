@@ -10,7 +10,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.nusantarian.donasi.databinding.FragmentHistoryUserBinding
-import com.nusantarian.donasi.model.*
+import com.nusantarian.donasi.model.Donation
+import com.nusantarian.donasi.model.Payment
+import com.nusantarian.donasi.model.UserHistoryPayment
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 
@@ -52,13 +54,10 @@ class HistoryUserFragment : Fragment() {
                 for (myDonationDocument in result) {
 
                     donationOrder.add(myDonationDocument.id)
-                    orderedPayments.put(
-                        myDonationDocument.id,
-                        UserHistoryPayment(
-                            Payment("", "", 0, 0, "", "", false, ""),
-                            Donation("", "", "", "", 0, 0, 0),
-                            "KEY"
-                        )
+                    orderedPayments[myDonationDocument.id] = UserHistoryPayment(
+                        Payment("", "", 0, 0, "", "", false, ""),
+                        Donation("", "", "", "", 0, 0, 0),
+                        "KEY"
                     )
 
                     //Ambil individu payment dari iterasi, di dalam payment ada donationUID & userUID
@@ -74,14 +73,15 @@ class HistoryUserFragment : Fragment() {
                                         if (donationDocument != null) {
                                             val donation = Donation.docToDonation(donationDocument)
 
-                                            orderedPayments[myDonationDocument.id] = UserHistoryPayment(
-                                                payment,
-                                                donation,
-                                                myDonationDocument.id
-                                            )
+                                            orderedPayments[myDonationDocument.id] =
+                                                UserHistoryPayment(
+                                                    payment,
+                                                    donation,
+                                                    myDonationDocument.id
+                                                )
 
                                             val adapter = GroupAdapter<GroupieViewHolder>()
-                                            for(donation in donationOrder){
+                                            for (donation in donationOrder) {
                                                 adapter.add(orderedPayments[donation]!!)
                                             }
                                             binding.rvMyDonations.adapter = adapter
