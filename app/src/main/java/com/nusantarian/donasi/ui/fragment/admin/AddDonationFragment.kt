@@ -1,6 +1,7 @@
 package com.nusantarian.donasi.ui.fragment.admin
 
 import android.app.DatePickerDialog
+import android.app.DatePickerDialog.OnDateSetListener
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -13,13 +14,16 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.nusantarian.donasi.R
 import com.nusantarian.donasi.databinding.FragmentAddDonationBinding
 import com.nusantarian.donasi.model.Donation
+import java.text.SimpleDateFormat
 import java.util.*
+
 
 class AddDonationFragment : Fragment() {
 
     private var _binding: FragmentAddDonationBinding? = null
     private val binding get() = _binding!!
     private val calendar = Calendar.getInstance()
+    private val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.ROOT)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,19 +48,22 @@ class AddDonationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val dateStart = OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+            calendar.set(Calendar.YEAR, year)
+            calendar.set(Calendar.MONTH, monthOfYear)
+            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+            binding.etStartDate.setText(sdf.format(calendar.time))
+        }
+        val dateEnd = OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+            calendar.set(Calendar.YEAR, year)
+            calendar.set(Calendar.MONTH, monthOfYear)
+            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+            binding.etEndDate.setText(sdf.format(calendar.time))
+        }
         binding.etStartDate.setOnClickListener {
             DatePickerDialog(
                 requireContext(),
-                { _, year, month, day ->
-                    binding.etStartDate.setText(
-                        resources.getString(
-                            R.string.text_date,
-                            year,
-                            month,
-                            day
-                        )
-                    )
-                },
+                dateStart,
                 calendar[Calendar.YEAR],
                 calendar[Calendar.MONTH],
                 calendar[Calendar.DAY_OF_MONTH]
@@ -65,21 +72,13 @@ class AddDonationFragment : Fragment() {
         binding.etEndDate.setOnClickListener {
             DatePickerDialog(
                 requireContext(),
-                { _, year, month, day ->
-                    binding.etEndDate.setText(
-                        resources.getString(
-                            R.string.text_date,
-                            year,
-                            month,
-                            day
-                        )
-                    )
-                },
+                dateEnd,
                 calendar[Calendar.YEAR],
                 calendar[Calendar.MONTH],
                 calendar[Calendar.DAY_OF_MONTH]
             ).show()
         }
+
         binding.btnStartFund.setOnClickListener {
             binding.progress.visibility = View.VISIBLE
             val title = binding.tilTitle.editText?.text.toString()
