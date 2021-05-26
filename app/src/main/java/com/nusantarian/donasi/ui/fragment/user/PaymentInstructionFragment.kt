@@ -1,27 +1,18 @@
 package com.nusantarian.donasi.ui.fragment.user
 
 import android.os.Bundle
-import android.view.*
-import android.widget.ArrayAdapter
-import android.widget.SearchView
-import android.widget.Spinner
-import android.widget.Toast
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.nusantarian.donasi.R
 import com.nusantarian.donasi.databinding.FragmentPaymentInstructionBinding
-import com.nusantarian.donasi.model.Donation
-import com.nusantarian.donasi.model.HomeDonation
 import com.nusantarian.donasi.model.Payment
-import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.GroupieViewHolder
 import java.text.DecimalFormat
-import kotlin.random.Random
 
 class PaymentInstructionFragment : Fragment() {
 
@@ -37,13 +28,23 @@ class PaymentInstructionFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         _binding = FragmentPaymentInstructionBinding.inflate(inflater, container, false)
+        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayShowHomeEnabled(true)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
         setHasOptionsMenu(true)
         return binding.root
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home ->
+                requireActivity().onBackPressed()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         loadData()
     }
 
