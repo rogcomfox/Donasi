@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_homeUserFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_homeUserFragment_to_donateFragment"
+            app:destination="@id/donateFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailDonationFragment"

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_admin"
+    app:startDestination="@id/mainAdminFragment">
+
+    <fragment
+        android:id="@+id/mainAdminFragment"
+        android:name="com.nusantarian.donasi.ui.fragment.admin.MainAdminFragment"
+        android:label="fragment_main_admin"
+        tools:layout="@layout/fragment_main_admin">
+        <action
+            android:id="@+id/action_mainAdminFragment_to_addDonationFragment"
+            app:destination="@id/addDonationFragment" />
+        <action
+            android:id="@+id/action_mainAdminFragment_to_listDonationPaymentFragment"
+            app:destination="@id/listDonationPaymentFragment" />
+        <action
+            android:id="@+id/action_mainAdminFragment_to_editDonationFragment"
+            app:destination="@id/editDonationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addDonationFragment"
+        android:name="com.nusantarian.donasi.ui.fragment.admin.AddDonationFragment"
+        android:label="fragment_add_donation"
+        tools:layout="@layout/fragment_add_donation" />
+    <fragment
+        android:id="@+id/listDonationPaymentFragment"
+        android:name="com.nusantarian.donasi.ui.fragment.admin.ListDonationPaymentFragment"
+        android:label="fragment_list_donation_payment"
+        tools:layout="@layout/fragment_list_donation_payment">
+        <action
+            android:id="@+id/action_listDonationPaymentFragment_to_detailPaymentFragment"
+            app:destination="@id/detailPaymentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editDonationFragment"
+        android:name="com.nusantarian.donasi.ui.fragment.admin.EditDonationFragment"
+        android:label="fragment_edit_donation"
+        tools:layout="@layout/fragment_edit_donation" />
+    <fragment
+        android:id="@+id/detailPaymentFragment"
+        android:name="com.nusantarian.donasi.ui.fragment.admin.DetailPaymentFragment"
+        android:label="fragment_detail_payment"
+        tools:layout="@layout/fragment_detail_payment" />
+</navigation>
