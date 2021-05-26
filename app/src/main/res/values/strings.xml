@@ -54,5 +54,6 @@
     <string name="nav_detailDonation">More Information</string>
     <string name="nav_paymentInstruction">Payment Instruction</string>
     <string name="nav_historyUser">My Donations</string>
+    <string name="nav_receipt">Receipt</string>
 
 </resources>
