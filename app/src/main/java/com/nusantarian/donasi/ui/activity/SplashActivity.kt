@@ -7,6 +7,7 @@ import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.nusantarian.donasi.databinding.ActivitySplashBinding
+import com.nusantarian.donasi.ui.fragment.landing.LoginFragment
 
 class SplashActivity : AppCompatActivity() {
 
@@ -25,7 +26,7 @@ class SplashActivity : AppCompatActivity() {
 
         Handler(Looper.getMainLooper()).postDelayed({
             if (user != null)
-                if (user.uid == "5JpWS9ze6tSlPvSjHj8njYFws533")
+                if (LoginFragment.ADMIN_UID.contains(user.uid))
                     startActivity(Intent(this, AdminMainActivity::class.java))
                 else
                     startActivity(Intent(this, MainActivity::class.java))
