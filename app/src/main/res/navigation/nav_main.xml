@@ -39,7 +39,11 @@
         android:id="@+id/historyUserFragment"
         android:name="com.nusantarian.donasi.ui.fragment.user.HistoryUserFragment"
         android:label="fragment_history_user"
-        tools:layout="@layout/fragment_history_user" />
+        tools:layout="@layout/fragment_history_user" >
+        <action
+            android:id="@+id/action_historyUserFragment_to_paymentInstructionFragment"
+            app:destination="@id/paymentInstructionFragment" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.nusantarian.donasi.ui.fragment.user.ProfileFragment"

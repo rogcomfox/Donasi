@@ -5,12 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.nusantarian.donasi.databinding.FragmentHistoryUserBinding
 import com.nusantarian.donasi.model.Donation
+import com.nusantarian.donasi.model.HomeDonation
 import com.nusantarian.donasi.model.Payment
 import com.nusantarian.donasi.model.UserHistoryPayment
 import com.xwray.groupie.GroupAdapter
@@ -77,13 +79,25 @@ class HistoryUserFragment : Fragment() {
                                                 UserHistoryPayment(
                                                     payment,
                                                     donation,
-                                                    myDonationDocument.id
+                                                    paymentDocument.id
                                                 )
 
                                             val adapter = GroupAdapter<GroupieViewHolder>()
                                             for (donation in donationOrder) {
                                                 adapter.add(orderedPayments[donation]!!)
                                             }
+
+                                            adapter.setOnItemClickListener { item, view ->
+                                                val d = item as UserHistoryPayment
+
+                                                findNavController()
+                                                    .navigate(
+                                                        HistoryUserFragmentDirections.actionHistoryUserFragmentToPaymentInstructionFragment(
+                                                            item.key
+                                                        )
+                                                    )
+                                            }
+
                                             binding.rvMyDonations.adapter = adapter
 
                                         }
