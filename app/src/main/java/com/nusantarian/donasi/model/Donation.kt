@@ -2,9 +2,14 @@ package com.nusantarian.donasi.model
 
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.NavHostFragment.findNavController
+import androidx.navigation.fragment.findNavController
+import com.google.android.material.button.MaterialButton
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.nusantarian.donasi.R
+import com.nusantarian.donasi.ui.fragment.user.HomeUserFragmentDirections
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Item
 import java.text.DecimalFormat
@@ -76,12 +81,23 @@ data class Donation(
     }
 }
 
-class HomeDonation(val donation: Donation, val key: String) : Item<GroupieViewHolder>() {
+class HomeDonation(val donation: Donation, val key: String, val fragment: Fragment) : Item<GroupieViewHolder>() {
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
         viewHolder.itemView.findViewById<TextView>(R.id.tv_title).text = donation.title
         viewHolder.itemView.findViewById<TextView>(R.id.tv_desc).text = donation.desc
         viewHolder.itemView.findViewById<TextView>(R.id.tv_duration).text =
             donation.currentDuration().toString() + " days remaining"
+
+
+        viewHolder.itemView.findViewById<MaterialButton>(R.id.btn_donate).setOnClickListener {
+            findNavController(fragment)
+                .navigate(
+                    HomeUserFragmentDirections.actionHomeUserFragmentToDonateFragment(
+                        key
+                    )
+                )
+        }
+
     }
 
     fun getItem(): Donation {

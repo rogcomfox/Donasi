@@ -59,6 +59,9 @@ class HomeUserFragment : Fragment() {
     private fun setSearchView() {
         val searchView = binding.svHome
 
+        searchView.setIconified(false)
+        searchView.clearFocus()
+
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query != null) {
@@ -97,11 +100,13 @@ class HomeUserFragment : Fragment() {
             .addOnSuccessListener { result ->
                 for (document in result) {
                     val donation: Donation = Donation.docToDonation(document)
+                    val homeDonation = HomeDonation(donation, document.id, this)
+
 
                     //Search System
                     if (donation.currentDuration() >= 0) {
                         if (keyword[0] == "") {
-                            donationList.add(HomeDonation(donation, document.id))
+                            donationList.add(homeDonation)
                         } else {
                             var point = 0
                             keyword.forEach {
@@ -110,7 +115,7 @@ class HomeUserFragment : Fragment() {
                                 }
                             }
                             if (point == keyword.size) {
-                                donationList.add(HomeDonation(donation, document.id))
+                                donationList.add(homeDonation)
                             }
                         }
                     }
@@ -121,8 +126,9 @@ class HomeUserFragment : Fragment() {
                     adapter.add(it)
                 }
 
-                adapter.setOnItemClickListener { item, _ ->
+                adapter.setOnItemClickListener { item, view ->
                     val donation = item as HomeDonation
+
                     findNavController()
                         .navigate(
                             HomeUserFragmentDirections.actionHomeUserFragmentToDetailDonationFragment(
