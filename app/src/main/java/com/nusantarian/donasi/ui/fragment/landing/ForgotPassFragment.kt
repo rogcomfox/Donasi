@@ -29,14 +29,10 @@ class ForgotPassFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.btnSend.setOnClickListener {
             binding.progress.visibility = View.VISIBLE
-            val email = binding.tilEmail.editText.toString()
+            val email = binding.tilEmail.editText?.text.toString()
 
-            if (email.isEmpty()) {
+            if (!isError(email)) {
                 binding.progress.visibility = View.GONE
-                binding.tilEmail.error = resources.getString(R.string.text_empty)
-            } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                binding.progress.visibility = View.GONE
-                binding.tilEmail.error = resources.getString(R.string.text_invalid)
             } else {
                 val auth = FirebaseAuth.getInstance()
                 auth.sendPasswordResetEmail(email).addOnCompleteListener {
@@ -47,6 +43,29 @@ class ForgotPassFragment : Fragment() {
                     binding.progress.visibility = View.GONE
                     Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
                 }
+            }
+        }
+    }
+    private fun isError(
+        email: String,
+
+    ): Boolean {
+        val empty = requireActivity().resources.getString(R.string.text_empty)
+        val invalid = requireActivity().resources.getString(R.string.text_invalid)
+
+        return when {
+            email.isEmpty() -> {
+                binding.tilEmail.error = empty
+                false
+            }
+            !Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
+                binding.tilEmail.error = invalid
+                false
+            }
+            else -> {
+                binding.tilEmail.error = null
+                binding.tilEmail.isErrorEnabled
+                true
             }
         }
     }
