@@ -77,7 +77,7 @@ data class Donation(
     }
 
     fun keywords(): String {
-        return title + desc + startDate + deadlineDate
+        return (title + desc + startDate + deadlineDate).lowercase()
     }
 }
 

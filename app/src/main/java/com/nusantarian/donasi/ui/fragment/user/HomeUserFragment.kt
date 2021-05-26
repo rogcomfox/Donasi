@@ -65,7 +65,7 @@ class HomeUserFragment : Fragment() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query != null) {
-                    val queries = query.split(" ").toTypedArray()
+                    val queries = query.lowercase().split(" ").toTypedArray()
                     loadDonationData(queries)
                     binding.tvCategory1.text =
                         "Results for " + '"' + queries[0] + "..." + '"'
