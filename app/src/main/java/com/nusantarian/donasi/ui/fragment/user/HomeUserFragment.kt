@@ -50,10 +50,6 @@ class HomeUserFragment : Fragment() {
             .addOnSuccessListener { document ->
                 if (document != null) {
                     binding.tvIntro.text = "Hello, " + document["name"]
-                    binding.tvIntro.setOnClickListener {
-                        findNavController().navigate(HomeUserFragmentDirections.actionHomeUserFragmentToHistoryUserFragment())
-                    }
-
                 } else {
                     binding.tvIntro.text = "Hello, NULL"
                 }
