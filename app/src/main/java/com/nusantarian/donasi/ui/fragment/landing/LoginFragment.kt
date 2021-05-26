@@ -64,7 +64,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
         auth.signInWithEmailAndPassword(email, pass).addOnCompleteListener {
             if (it.isSuccessful) {
                 binding.progress.visibility = View.GONE
-                if (auth.currentUser?.uid == ADMIN_UID)
+                if (ADMIN_UID.contains(auth.currentUser?.uid))
                     startActivity(Intent(requireContext(), AdminMainActivity::class.java))
                 else
                     startActivity(Intent(requireContext(), MainActivity::class.java))
@@ -77,6 +77,9 @@ class LoginFragment : Fragment(), View.OnClickListener {
     }
 
     companion object {
-        const val ADMIN_UID = "5JpWS9ze6tSlPvSjHj8njYFws533"
+        val ADMIN_UID = mutableListOf(
+            "5JpWS9ze6tSlPvSjHj8njYFws533",
+            "f0Revm2pNff226Uxi6QzEK1KPq43"
+        )
     }
 }
