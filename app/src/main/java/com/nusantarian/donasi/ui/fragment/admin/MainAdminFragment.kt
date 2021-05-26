@@ -7,16 +7,24 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.nusantarian.donasi.R
 import com.nusantarian.donasi.databinding.FragmentMainAdminBinding
+import com.nusantarian.donasi.model.Donation
+import com.nusantarian.donasi.model.HomeAdminDonation
+import com.nusantarian.donasi.model.HomeDonation
 import com.nusantarian.donasi.ui.activity.LandingActivity
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.GroupieViewHolder
 
 class MainAdminFragment : Fragment() {
 
     private var _binding: FragmentMainAdminBinding? = null
     private val binding get() = _binding!!
     private val auth = FirebaseAuth.getInstance()
+    private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,6 +42,28 @@ class MainAdminFragment : Fragment() {
             findNavController()
                 .navigate(MainAdminFragmentDirections.actionMainAdminFragmentToAddDonationFragment())
         }
+
+        loadData()
+    }
+
+    private fun loadData(){
+        binding.rvDonations.layoutManager = GridLayoutManager(requireContext(), 2)
+
+        val adapter = GroupAdapter<GroupieViewHolder>()
+
+        db.collection("donations")
+            .get()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                    val donation: Donation = Donation.docToDonation(document)
+                    val homeAdminDonation = HomeAdminDonation(donation, document.id, this)
+
+                    adapter.add(homeAdminDonation)
+                }
+
+                binding.rvDonations.adapter = adapter
+            }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

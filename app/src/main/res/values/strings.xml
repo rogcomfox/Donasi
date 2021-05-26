@@ -19,7 +19,7 @@
     <string name="tv_quote_home">Go ahead, even small things can make a big difference.</string>
     <string name="tv_search">Search</string>
     <string name="btn_donate">Donate</string>
-    <string name="tv_readMore"><u>Read More</u></string>
+    <string name="tv_readMore"><u>Read more</u></string>
     <string name="tv_story">Story</string>
     <string name="tv_donate">Donate</string>
     <string name="tv_enterNominal">Enter the nominal of donation:</string>
@@ -46,7 +46,7 @@
     <string name="btn_send">Send</string>
     <string name="tv_intro_admin">Hello, Admin</string>
     <string name="tv_quote">Go Ahead, even small things can make a big difference</string>
-    <string name="tv_category_1_admin">Donation Opened</string>
+    <string name="tv_category_1_admin">Available Donations</string>
     <string name="text_date">%1$d-%2$d-%3$d</string>
     <string name="tv_edit_donation">Edit Donation</string>
     <string name="tv_detail_payment">Payment Details</string>
@@ -75,5 +75,7 @@
     <string name="tv_admDetail_bank">Bank Transfer</string>
     <string name="tv_admDetail_donation">Donation</string>
     <string name="tv_admDetail_transferDate">Transfer Date</string>
+    <string name="btn_edit">Edit</string>
+    <string name="tv_preview"><u>Preview</u></string>
 
 </resources>

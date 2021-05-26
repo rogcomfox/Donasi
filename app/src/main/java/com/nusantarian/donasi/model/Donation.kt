@@ -2,6 +2,7 @@ package com.nusantarian.donasi.model
 
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.navigation.fragment.findNavController
@@ -106,6 +107,30 @@ class HomeDonation(val donation: Donation, val key: String, val fragment: Fragme
 
     override fun getLayout(): Int {
         return R.layout.item_donation_home
+    }
+
+}
+
+class HomeAdminDonation(val donation: Donation, val key: String, val fragment: Fragment) : Item<GroupieViewHolder>() {
+    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
+        viewHolder.itemView.findViewById<TextView>(R.id.tv_title).text = donation.title
+        viewHolder.itemView.findViewById<TextView>(R.id.tv_desc).text = donation.desc
+        viewHolder.itemView.findViewById<TextView>(R.id.tv_duration).text =
+            donation.currentDuration().toString() + " days remaining"
+
+
+        viewHolder.itemView.findViewById<MaterialButton>(R.id.btn_donate).setOnClickListener {
+            Toast.makeText(fragment.context, "Coming Soon", Toast.LENGTH_SHORT).show()
+        }
+
+    }
+
+    fun getItem(): Donation {
+        return donation
+    }
+
+    override fun getLayout(): Int {
+        return R.layout.item_donation_home_admin
     }
 
 }
