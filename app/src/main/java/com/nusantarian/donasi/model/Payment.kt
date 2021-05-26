@@ -1,6 +1,8 @@
 package com.nusantarian.donasi.model
 
+import android.view.View
 import android.widget.TextView
+import com.google.common.base.Verify
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.rpc.context.AttributeContext
@@ -16,7 +18,7 @@ data class Payment (
     val uniqueCode: Int,
     val bank: String,
     val transferDate: String,
-    val verified: Boolean,
+    var verified: Boolean,
     val invoiceURL: String
         ){
 
@@ -71,6 +73,46 @@ class UserHistoryPayment(val payment: Payment, val donation: Donation, val key: 
 
     override fun getLayout(): Int {
         return R.layout.item_payment_user_history
+    }
+
+}
+
+class AdminDetailPayment(val payment: Payment, val user: User, val key: String) : Item<GroupieViewHolder>() {
+    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
+
+        viewHolder.itemView.findViewById<TextView>(R.id.tv_admDetail_name).text = user.name
+        viewHolder.itemView.findViewById<TextView>(R.id.tv_admDetail_bank).text = payment.bank.removeSuffix("Transfer")
+        val formattedPrice = DecimalFormat("#,###").format(payment.donation + payment.uniqueCode)
+        viewHolder.itemView.findViewById<TextView>(R.id.tv_admDetail_donationTotal).text = "Rp $formattedPrice"
+        viewHolder.itemView.findViewById<TextView>(R.id.tv_admDetail_transferDate).text = payment.transferDate
+
+        viewHolder.itemView.findViewById<TextView>(R.id.tv_admDetail_status).text = if (payment.verified) "VERIFIED" else "NOT VERIFIED"
+
+        if(payment.verified){
+            viewHolder.itemView.findViewById<TextView>(R.id.tv_admDetail_status).setBackgroundResource(R.drawable.rounded_status_verified)
+        }else{
+            viewHolder.itemView.findViewById<TextView>(R.id.tv_admDetail_status).setBackgroundResource(R.drawable.rounded_status_unverified)
+        }
+    }
+
+    fun setVerification(view: View, status: Boolean){
+        payment.verified = status
+
+        view.findViewById<TextView>(R.id.tv_admDetail_status).text = if (payment.verified) "VERIFIED" else "NOT VERIFIED"
+
+        if(payment.verified){
+            view.findViewById<TextView>(R.id.tv_admDetail_status).setBackgroundResource(R.drawable.rounded_status_verified)
+        }else{
+            view.findViewById<TextView>(R.id.tv_admDetail_status).setBackgroundResource(R.drawable.rounded_status_unverified)
+        }
+    }
+
+    fun getItem(): Payment {
+        return payment
+    }
+
+    override fun getLayout(): Int {
+        return R.layout.item_payment_admin_detail
     }
 
 }

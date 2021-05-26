@@ -57,7 +57,7 @@ class PaymentOrgFragment : Fragment() {
             }
 
         adapter.setOnItemClickListener { item, _ ->
-            val donation = item as HomeDonation
+            val donation = item as OrganizerDonation
             findNavController()
                 .navigate(
                     PaymentOrgFragmentDirections.actionPaymentOrgFragmentToDetailPaymentFragment(donation.key)
