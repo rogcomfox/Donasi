@@ -7,7 +7,7 @@ import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.nusantarian.donasi.R
@@ -87,9 +87,7 @@ class HomeUserFragment : Fragment() {
     }
 
     private fun loadDonationData(keyword: Array<String>) {
-        val linearLayoutManager = LinearLayoutManager(activity)
-        linearLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
-        binding.rvDonations.layoutManager = linearLayoutManager
+        binding.rvDonations.layoutManager = GridLayoutManager(requireContext(), 2)
 
         val adapter = GroupAdapter<GroupieViewHolder>()
         val donationList = mutableListOf<HomeDonation>()

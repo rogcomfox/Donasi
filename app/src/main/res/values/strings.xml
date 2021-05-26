@@ -49,6 +49,7 @@
     <string name="tv_category_1_admin">Donation Opened</string>
     <string name="text_date">%1$d-%2$d-%3$d</string>
     <string name="tv_edit_donation">Edit Donation</string>
+    <string name="tv_detail_payment">Detail Payment</string>
 
     <!--icon strings-->
     <string name="nav_history">History</string>
@@ -68,5 +69,6 @@
     <string name="til_target">Target Donation (in Rupiah)</string>
     <string name="til_story">Story</string>
     <string name="btn_start_fund">Start Fundraising</string>
+    <string name="btn_save">Save Data</string>
 
 </resources>

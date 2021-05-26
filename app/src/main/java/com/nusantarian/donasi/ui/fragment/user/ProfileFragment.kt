@@ -5,7 +5,6 @@ import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import coil.load
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -43,8 +42,10 @@ class ProfileFragment : Fragment() {
             android.R.id.home ->
                 requireActivity().onBackPressed()
             R.id.nav_pass ->
-                findNavController()
-                    .navigate(ProfileFragmentDirections.actionProfileFragmentToChangePassFragment())
+                Toast.makeText(context, "Coming Soon", Toast.LENGTH_SHORT).show()
+//                findNavController()
+//                    .navigate(
+//                        ProfileFragmentDirections.actionProfileFragmentToChangePassFragment())
         }
         return super.onOptionsItemSelected(item)
     }

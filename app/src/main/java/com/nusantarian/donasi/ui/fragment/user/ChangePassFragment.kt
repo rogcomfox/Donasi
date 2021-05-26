@@ -49,7 +49,7 @@ class ChangePassFragment : Fragment() {
         val confirm = binding.tilConfirm.editText?.text.toString()
         val auth = FirebaseAuth.getInstance().currentUser!!
 
-        if (new != confirm)
+        if (new != confirm && new.isEmpty() && confirm.isEmpty())
             binding.progress.visibility = View.GONE
         else
             auth.updatePassword(new).addOnCompleteListener {
