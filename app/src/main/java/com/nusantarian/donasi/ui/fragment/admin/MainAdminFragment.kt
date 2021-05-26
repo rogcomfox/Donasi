@@ -14,7 +14,6 @@ import com.nusantarian.donasi.R
 import com.nusantarian.donasi.databinding.FragmentMainAdminBinding
 import com.nusantarian.donasi.model.Donation
 import com.nusantarian.donasi.model.HomeAdminDonation
-import com.nusantarian.donasi.model.HomeDonation
 import com.nusantarian.donasi.ui.activity.LandingActivity
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
@@ -42,11 +41,11 @@ class MainAdminFragment : Fragment() {
             findNavController()
                 .navigate(MainAdminFragmentDirections.actionMainAdminFragmentToAddDonationFragment())
         }
-
         loadData()
     }
 
-    private fun loadData(){
+    private fun loadData() {
+        binding.progress.visibility = View.VISIBLE
         binding.rvDonations.layoutManager = GridLayoutManager(requireContext(), 2)
 
         val adapter = GroupAdapter<GroupieViewHolder>()
@@ -63,7 +62,7 @@ class MainAdminFragment : Fragment() {
 
                 binding.rvDonations.adapter = adapter
             }
-
+        binding.progress.visibility = View.GONE
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

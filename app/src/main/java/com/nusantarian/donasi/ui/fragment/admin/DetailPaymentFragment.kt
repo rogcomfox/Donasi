@@ -5,25 +5,18 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.auth.User
-import com.nusantarian.donasi.R
 import com.nusantarian.donasi.databinding.FragmentDetailPaymentBinding
-import com.nusantarian.donasi.databinding.FragmentPaymentOrgBinding
 import com.nusantarian.donasi.model.AdminDetailPayment
-import com.nusantarian.donasi.model.HomeDonation
 import com.nusantarian.donasi.model.Payment
 import com.nusantarian.donasi.ui.fragment.user.DetailDonationFragmentArgs
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
-import java.lang.reflect.Field
 
 class DetailPaymentFragment : Fragment() {
 
@@ -39,17 +32,28 @@ class DetailPaymentFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         _binding = FragmentDetailPaymentBinding.inflate(inflater, container, false)
+        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayShowHomeEnabled(true)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        setHasOptionsMenu(true)
         return binding.root
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home ->
+                requireActivity().onBackPressed()
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         loadData()
     }
 
     private fun loadData() {
-
+        binding.progress.visibility = View.VISIBLE
         db.collection("donations").document(args.donationUID).get()
             .addOnSuccessListener {
                 binding.tvAdmindetailTitle.text = it["title"].toString()
@@ -76,7 +80,7 @@ class DetailPaymentFragment : Fragment() {
                                     adapter.setOnItemClickListener { item, view ->
                                         val paymentDetail = item as AdminDetailPayment
 
-                                        view.findViewById<TextView>(R.id.tv_admDetail_status).text = "Loading..."
+                                        binding.tvAdmindetailTitle.text = "Loading..."
 
                                         if (paymentDetail.getItem().verified) {
 
@@ -127,13 +131,12 @@ class DetailPaymentFragment : Fragment() {
                                                 }
                                         }
                                     }
-
                                     binding.rvDetailPayment.adapter = adapter
                                 }
                         }
                     }
             }
-
+        binding.progress.visibility = View.GONE
     }
 
 }

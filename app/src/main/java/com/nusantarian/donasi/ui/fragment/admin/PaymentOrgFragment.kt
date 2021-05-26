@@ -1,19 +1,18 @@
 package com.nusantarian.donasi.ui.fragment.admin
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.firestore.FirebaseFirestore
-import com.nusantarian.donasi.R
 import com.nusantarian.donasi.databinding.FragmentPaymentOrgBinding
 import com.nusantarian.donasi.model.Donation
-import com.nusantarian.donasi.model.HomeDonation
 import com.nusantarian.donasi.model.OrganizerDonation
-import com.nusantarian.donasi.ui.fragment.user.HomeUserFragmentDirections
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 
@@ -28,16 +27,27 @@ class PaymentOrgFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         _binding = FragmentPaymentOrgBinding.inflate(inflater, container, false)
+        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayShowHomeEnabled(true)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        setHasOptionsMenu(true)
         return binding.root
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home ->
+                requireActivity().onBackPressed()
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         loadData()
     }
 
-    private fun loadData(){
+    private fun loadData() {
         val linearLayoutManager = LinearLayoutManager(activity)
         linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
         binding.rvOrganizer.layoutManager = linearLayoutManager
@@ -60,7 +70,9 @@ class PaymentOrgFragment : Fragment() {
             val donation = item as OrganizerDonation
             findNavController()
                 .navigate(
-                    PaymentOrgFragmentDirections.actionPaymentOrgFragmentToDetailPaymentFragment(donation.key)
+                    PaymentOrgFragmentDirections.actionPaymentOrgFragmentToDetailPaymentFragment(
+                        donation.key
+                    )
                 )
         }
 
