@@ -97,7 +97,7 @@ class HomeDonation(val donation: Donation, val key: String, val fragment: Fragme
     override fun getLayout(): Int = R.layout.item_donation_home
 }
 
-class HomeAdminDonation(val donation: Donation, private val key: String, val fragment: Fragment) :
+class HomeAdminDonation(val donation: Donation, val key: String, val fragment: Fragment) :
     Item<GroupieViewHolder>() {
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
         viewHolder.itemView.findViewById<TextView>(R.id.tv_title).text = donation.title
