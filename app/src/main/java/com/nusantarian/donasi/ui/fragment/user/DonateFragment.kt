@@ -1,29 +1,22 @@
 package com.nusantarian.donasi.ui.fragment.user
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.SearchView
-import android.widget.Spinner
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.nusantarian.donasi.R
 import com.nusantarian.donasi.databinding.FragmentDonateBinding
-import com.nusantarian.donasi.databinding.FragmentHomeUserBinding
 import com.nusantarian.donasi.model.Donation
-import com.nusantarian.donasi.model.HomeDonation
-import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.GroupieViewHolder
-import java.text.DecimalFormat
 import java.text.SimpleDateFormat
-import java.time.LocalDate
 import java.util.*
 import kotlin.random.Random
 
@@ -33,8 +26,8 @@ class DonateFragment : Fragment() {
     private val binding get() = _binding!!
     private val args: DonateFragmentArgs by navArgs()
 
-    val db: FirebaseFirestore = FirebaseFirestore.getInstance()
-    val auth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val db = FirebaseFirestore.getInstance()
+    val auth = FirebaseAuth.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,13 +35,23 @@ class DonateFragment : Fragment() {
     ): View {
         // Inflate the layout for this fragment
         _binding = FragmentDonateBinding.inflate(inflater, container, false)
+        (activity as AppCompatActivity).setSupportActionBar(binding.toolbar)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayShowHomeEnabled(true)
         setHasOptionsMenu(true)
         return binding.root
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home ->
+                requireActivity().onBackPressed()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         loadData()
     }
 
@@ -67,7 +70,7 @@ class DonateFragment : Fragment() {
                     items.sort()
                     items.add("")
                     val adapter = view?.let {
-                        ArrayAdapter<String>(
+                        ArrayAdapter(
                             it.context,
                             android.R.layout.simple_spinner_dropdown_item,
                             items
@@ -82,7 +85,10 @@ class DonateFragment : Fragment() {
                                 .toInt() >= 10000
                         ) {
 
-                            val date = SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time)
+                            val date = SimpleDateFormat(
+                                "yyyy-MM-dd",
+                                Locale.ROOT
+                            ).format(Calendar.getInstance().time)
                             val uniqueCode = Random.nextInt(1, 999)
                             val timestamp = Timestamp.now().toDate()
 
@@ -111,16 +117,18 @@ class DonateFragment : Fragment() {
                                         .addOnSuccessListener {
                                             findNavController()
                                                 .navigate(
-                                                    DonateFragmentDirections.actionDonateFragmentToPaymentInstructionFragment(paymentUID)
+                                                    DonateFragmentDirections.actionDonateFragmentToPaymentInstructionFragment(
+                                                        paymentUID
+                                                    )
                                                 )
                                         }
                                 }
-                                .addOnFailureListener { }
-
-
+                                .addOnFailureListener {
+                                    Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+                                }
                         } else {
                             Toast.makeText(
-                                getActivity(),
+                                context,
                                 "Please enter all fields correctly.",
                                 Toast.LENGTH_SHORT
                             ).show()
@@ -130,11 +138,10 @@ class DonateFragment : Fragment() {
             }
 
 
-
     }
 
     companion object {
-        val PAYMENT_OPTIONS = mutableListOf<String>(
+        val PAYMENT_OPTIONS = mutableListOf(
             "BNI Syariah Transfer",
             "BNI Transfer",
             "BRI Transfer",

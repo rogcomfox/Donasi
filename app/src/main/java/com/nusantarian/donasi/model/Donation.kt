@@ -2,21 +2,19 @@ package com.nusantarian.donasi.model
 
 import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment.findNavController
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.nusantarian.donasi.R
+import com.nusantarian.donasi.ui.fragment.admin.MainAdminFragmentDirections
 import com.nusantarian.donasi.ui.fragment.user.HomeUserFragmentDirections
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Item
 import java.text.DecimalFormat
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
-
 
 data class Donation(
     val title: String,
@@ -35,7 +33,8 @@ data class Donation(
 ) {
     companion object {
         fun docToDonation(document: QueryDocumentSnapshot): Donation {
-            val donation: Donation = Donation(
+
+            return Donation(
                 document["title"].toString(),
                 document["desc"].toString(),
                 document["startDate"].toString(),
@@ -44,12 +43,11 @@ data class Donation(
                 document["cashTarget"].toString().toInt(),
                 document["donorQty"].toString().toInt()
             )
-
-            return donation
         }
 
         fun docToDonation(document: DocumentSnapshot): Donation {
-            val donation: Donation = Donation(
+
+            return Donation(
                 document["title"].toString(),
                 document["desc"].toString(),
                 document["startDate"].toString(),
@@ -58,31 +56,49 @@ data class Donation(
                 document["cashTarget"].toString().toInt(),
                 document["donorQty"].toString().toInt()
             )
-
-            return donation
         }
     }
 
     fun totalDuration(): Int {
-        val start: LocalDate = LocalDate.parse(startDate)
-        val end: LocalDate = LocalDate.parse(deadlineDate)
+        val start = LocalDate.parse(startDate)
+        val end = LocalDate.parse(deadlineDate)
 
         return ChronoUnit.DAYS.between(start, end).toInt()
     }
 
     fun currentDuration(): Int {
-        val start: LocalDate = LocalDate.now()
-        val end: LocalDate = LocalDate.parse(deadlineDate)
+        val start = LocalDate.now()
+        val end = LocalDate.parse(deadlineDate)
 
         return ChronoUnit.DAYS.between(start, end).toInt()
     }
 
-    fun keywords(): String {
-        return (title + desc + startDate + deadlineDate).lowercase()
-    }
+    fun keywords(): String = (title + desc + startDate + deadlineDate).lowercase()
 }
 
-class HomeDonation(val donation: Donation, val key: String, val fragment: Fragment) : Item<GroupieViewHolder>() {
+class HomeDonation(val donation: Donation, val key: String, val fragment: Fragment) :
+    Item<GroupieViewHolder>() {
+    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
+        viewHolder.itemView.findViewById<TextView>(R.id.tv_title).text = donation.title
+        viewHolder.itemView.findViewById<TextView>(R.id.tv_desc).text = donation.desc
+        viewHolder.itemView.findViewById<TextView>(R.id.tv_duration).text =
+            donation.currentDuration().toString() + " days remaining"
+
+
+        viewHolder.itemView.findViewById<MaterialButton>(R.id.btn_donate).setOnClickListener {
+            findNavController(fragment)
+                .navigate(HomeUserFragmentDirections.actionHomeUserFragmentToDonateFragment(key))
+        }
+
+    }
+
+    fun getItem(): Donation = donation
+
+    override fun getLayout(): Int = R.layout.item_donation_home
+}
+
+class HomeAdminDonation(val donation: Donation, private val key: String, val fragment: Fragment) :
+    Item<GroupieViewHolder>() {
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
         viewHolder.itemView.findViewById<TextView>(R.id.tv_title).text = donation.title
         viewHolder.itemView.findViewById<TextView>(R.id.tv_desc).text = donation.desc
@@ -93,7 +109,7 @@ class HomeDonation(val donation: Donation, val key: String, val fragment: Fragme
         viewHolder.itemView.findViewById<MaterialButton>(R.id.btn_donate).setOnClickListener {
             findNavController(fragment)
                 .navigate(
-                    HomeUserFragmentDirections.actionHomeUserFragmentToDonateFragment(
+                    MainAdminFragmentDirections.actionMainAdminFragmentToEditDonationFragment(
                         key
                     )
                 )
@@ -101,38 +117,9 @@ class HomeDonation(val donation: Donation, val key: String, val fragment: Fragme
 
     }
 
-    fun getItem(): Donation {
-        return donation
-    }
+    fun getItem(): Donation = donation
 
-    override fun getLayout(): Int {
-        return R.layout.item_donation_home
-    }
-
-}
-
-class HomeAdminDonation(val donation: Donation, val key: String, val fragment: Fragment) : Item<GroupieViewHolder>() {
-    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
-        viewHolder.itemView.findViewById<TextView>(R.id.tv_title).text = donation.title
-        viewHolder.itemView.findViewById<TextView>(R.id.tv_desc).text = donation.desc
-        viewHolder.itemView.findViewById<TextView>(R.id.tv_duration).text =
-            donation.currentDuration().toString() + " days remaining"
-
-
-        viewHolder.itemView.findViewById<MaterialButton>(R.id.btn_donate).setOnClickListener {
-            Toast.makeText(fragment.context, "Coming Soon", Toast.LENGTH_SHORT).show()
-        }
-
-    }
-
-    fun getItem(): Donation {
-        return donation
-    }
-
-    override fun getLayout(): Int {
-        return R.layout.item_donation_home_admin
-    }
-
+    override fun getLayout(): Int = R.layout.item_donation_home_admin
 }
 
 class OrganizerDonation(val donation: Donation, val key: String) : Item<GroupieViewHolder>() {
@@ -147,16 +134,13 @@ class OrganizerDonation(val donation: Donation, val key: String) : Item<GroupieV
         viewHolder.itemView.findViewById<ProgressBar>(R.id.pb_org).max = donation.cashTarget
         viewHolder.itemView.findViewById<ProgressBar>(R.id.pb_org).progress = donation.cashCollected
 
-        viewHolder.itemView.findViewById<TextView>(R.id.tv_org_donorQty).text = "${donation.donorQty} donations"
-        viewHolder.itemView.findViewById<TextView>(R.id.tv_org_duration).text = "${donation.currentDuration()} days remaining"
+        viewHolder.itemView.findViewById<TextView>(R.id.tv_org_donorQty).text =
+            "${donation.donorQty} donations"
+        viewHolder.itemView.findViewById<TextView>(R.id.tv_org_duration).text =
+            "${donation.currentDuration()} days remaining"
     }
 
-    fun getItem(): Donation {
-        return donation
-    }
+    fun getItem(): Donation = donation
 
-    override fun getLayout(): Int {
-        return R.layout.item_donation_organizer
-    }
-
+    override fun getLayout(): Int = R.layout.item_donation_organizer
 }
