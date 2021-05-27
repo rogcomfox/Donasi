@@ -13,7 +13,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.nusantarian.donasi.R
 import com.nusantarian.donasi.databinding.FragmentMainAdminBinding
 import com.nusantarian.donasi.model.Donation
-import com.nusantarian.donasi.model.HomeAdminDonation
+import com.nusantarian.donasi.model.HomeDonation
 import com.nusantarian.donasi.ui.activity.LandingActivity
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
@@ -55,9 +55,18 @@ class MainAdminFragment : Fragment() {
             .addOnSuccessListener { result ->
                 for (document in result) {
                     val donation: Donation = Donation.docToDonation(document)
-                    val homeAdminDonation = HomeAdminDonation(donation, document.id, this)
+                    val homeAdminDonation = HomeDonation(donation, document.id, this)
 
                     adapter.add(homeAdminDonation)
+                }
+                adapter.setOnItemClickListener { item, _ ->
+                    val donation = item as HomeDonation
+                    findNavController()
+                        .navigate(
+                            MainAdminFragmentDirections.actionMainAdminFragmentToPreviewDonationAdminFragment(
+                                donation.key
+                            )
+                        )
                 }
 
                 binding.rvDonations.adapter = adapter

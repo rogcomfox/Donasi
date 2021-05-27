@@ -59,7 +59,7 @@ class HomeUserFragment : Fragment() {
     private fun setSearchView() {
         val searchView = binding.svHome
 
-        searchView.setIconified(false)
+        searchView.isIconified = false
         searchView.clearFocus()
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
