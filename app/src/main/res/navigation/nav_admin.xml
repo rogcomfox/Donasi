@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_mainAdminFragment_to_paymentOrgFragment"
             app:destination="@id/paymentOrgFragment" />
+        <action
+            android:id="@+id/action_mainAdminFragment_to_previewDonationAdminFragment"
+            app:destination="@id/previewDonationAdminFragment" />
     </fragment>
     <fragment
         android:id="@+id/addDonationFragment"
@@ -47,9 +50,18 @@
         android:id="@+id/paymentOrgFragment"
         android:name="com.nusantarian.donasi.ui.fragment.admin.PaymentOrgFragment"
         android:label="fragment_payment_org"
-        tools:layout="@layout/fragment_payment_org" >
+        tools:layout="@layout/fragment_payment_org">
         <action
             android:id="@+id/action_paymentOrgFragment_to_detailPaymentFragment"
             app:destination="@id/detailPaymentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/previewDonationAdminFragment"
+        android:name="com.nusantarian.donasi.ui.fragment.admin.PreviewDonationAdminFragment"
+        android:label="fragment_preview_donation_admin"
+        tools:layout="@layout/fragment_preview_donation_admin">
+        <argument
+            android:name="donationUID"
+            app:argType="string" />
     </fragment>
 </navigation>
